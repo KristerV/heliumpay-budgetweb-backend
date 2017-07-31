@@ -55,6 +55,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 	- [ ] How to set up a Masternode
 	- [ ] Network statistics (incl. MN earnings)
 	- [ ] Changelog
+	- [ ] API listing
 - [ ] **Stage 6** - MN Private key based actions
 	- [ ] Submit your private key (encrypted)
 	- [ ] Vote using a button
