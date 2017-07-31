@@ -1,10 +1,12 @@
 # Helium budget proposal
 
-A Budget Proposal system for Helium Payments. Since budget proposals are very connected to Masternodes, it may as well be a Masternode management center.
+A Budget Proposal system for Helium Payments with the Masternode functions that make sense.
+
+**All of this is open for suggestions and we are looking for developers/designers to help.**
 
 ## Architecture
 
-- Backend (node.js)
+- Backend (Node.js)
 	- Helium-core communication
 	- Database for conversations
 	- Public API
@@ -16,62 +18,63 @@ A Budget Proposal system for Helium Payments. Since budget proposals are very co
 	- Bootstrap like CSS framework
 	- React.js auto-update or refresh to update?
 
-## Features
+## Development stages
 
-- [x] Stage 0 - Figure out theoretical stuff (this README)
-- [ ] Stage 1 - GET all info
-- [ ] Stage 2 - Participate with generated commands
-- [ ] Stage 3 - User based actions
-- [ ] Stage 4 - Informational pages
-- [ ] Stage 5 - MN Private key based actions
+A stage is basically a bunch of features. Starting with the most critical and moving down to nice to have stuff. The front-end will be developed at the same time as backend, but no extra prettyness will be added until main features are implemented (unless we find a front-end dev). The website ideally will be public throughout all of the developemnt.
 
-- [ ] MVP
+- [x] **Stage 0** - Figure out theoretical stuff (this README)
+- [ ] **Stage 1** - GET all info
+	- [ ] Proposals list
+		- [ ] Current Budget information
+		- [ ] List all proposals [new, paid, completed, failed]
+		- [ ] Item: Health, title, author, votes, amount(HLM/USD), payment#
+		- [ ] Filter list
+	- [ ] Proposal
+		- [ ] Details from dash-core
+- [ ] **Stage 2** - Participate with generated commands
+	- [ ] Vote for proposal
+	- [ ] Submit new proposal
+- [ ] **Stage 3** - User based actions
 	- [ ] User management
 		- [ ] Register, Login, Edit profile
 		- [ ] API key gen
 		- [ ] Register your masternodes
 	- [ ] Proposals list
-		- [ ] Budget information
-		- [ ] List all proposals [new, paid, completed, failed]
-		- [ ] Item: Health, title, author, votes, amount(HLM/USD), comments(unseen), your_vote, payment#
-		- [ ] Filter list
+		- [ ] Item: your vote, comments(unseen)
 	- [ ] Proposal view
-		- [ ] Overview
-		- [ ] Details from dash-core
+		- [ ] Proposal owner
+			- [ ] Claim your proposal
+			- [ ] Edit info
 		- [ ] Description
-		- [ ] Vote
 		- [ ] Commenting
 		- [ ] Unseen comments are visible
-		- [ ] Progress report (have seller accountable)
-	- [ ] Submit proposal
-		- [ ] Guide
-		- [ ] Command generator
-		- [ ] Claim your proposal
-		- [ ] Add extra info
-- [ ] Nice to have
-	- [ ] Masternodes
-		- [ ] Vote with MN private key (encrypted with pass)
+- [ ] **Stage 4** - Prettify frontend
+- [ ] **Stage 5** - Informational pages
+	- [ ] Front page
+	- [ ] Getting started with Helium
+	- [ ] How to set up a Masternode
+	- [ ] Network statistics (incl. MN earnings)
+	- [ ] Changelog
+- [ ] **Stage 6** - MN Private key based actions
+	- [ ] Submit your private key (encrypted)
+	- [ ] Vote using a button
+	- [ ] Masternodes monitoring
+		- [ ] Performance / status
 		- [ ] How much a masternode is earning
-		- [ ] How much you're earning
-		- [ ] Masternodes monitoring
-			- [ ] Performance / status
-			- [ ] Incidents history
-			- [ ] Next payment calculator
-		- [ ] Proposal submitting on-site
-	- [ ] Info pages
-		- [ ] Front page
-		- [ ] Getting started with Helium
-		- [ ] How to set up a Masternode
-		- [ ] Network statistics (incl. MN earnings)
-		- [ ] Changelog
-	- [ ] Notifications (emails/push/web)
-- [ ] Questions
-	- Pre-proposals for free?
-	- Solution for hundreds of proposals? Dash doesn't want to lower their entry fee.
-	- Markdown vs. WYSIWYG editing
-	- Email link vs. password (privacy)
-	- What does "trustless voting mean?
-	- Domain name ideas?
+		- [ ] Next payment calculator
+		- [ ] Incidents history
+- [ ] **Stage X** - Backlog
+	- Notifications (email/push/web)
+
+# Questions still unanswered
+
+- Offer pre-proposals on-site? Dash has their forum for it.
+- Solution for hundreds of proposals? Dash doesn't want to lower their entry fee.
+- Markdown vs. WYSIWYG?
+- Is providing the email a privacy concern?
+- What does "trustless voting" mean?
+- Domain name ideas?
+- How to have proposal owner accountable after budget allocated?
 
 ## TODO
 
@@ -82,16 +85,14 @@ A Budget Proposal system for Helium Payments. Since budget proposals are very co
 	- [x] DashCentral features
 	- [x] Dash community fill-ins (i.e. dashvotetracker.com)
 	- [ ] Other coins proposal systems
-	- [ ] Helium community thoughts (after previous steps done)
 - [ ] Watch someone from the Dash community actually contribute and vote.
-- [x] Find help from community (none came)
+- [x] Find help from community (none so far)
 	- [ ] Backend programmer
 	- [ ] Frontend programmer
 	- [ ] Designer
 - [x] What's the MVP?
 - [x] Figure out platform
-- [ ] Pick hosting provider
-- [ ] Domain
+- [ ] Buy domain
 
 # Links
 
