@@ -116,3 +116,15 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 - https://www.dashninja.pl/masternodes.html
 - https://dash-news.de/dashtv/#value=1000
 - http://178.254.23.111/~pub/Dash/Dash_Info.html
+
+## API design guidelines
+
+- http://microcosm-cc.github.io/
+- http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+- https://api.github.com/
+- https://docs.stormpath.com/rest/product-guide/latest/reference.html
+- https://stripe.com/docs/api
+- https://plaid.com/docs/api/
+- https://developers.digitalocean.com/documentation/v2/
+- https://developers.google.com/drive/v2/reference/#Children
+- https://postgrest.com/en/v4.1/intro.html - tool
