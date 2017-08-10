@@ -1,0 +1,23 @@
+{
+  "name": "helium-budget-proposals",
+  "version": "0.0.1",
+  "description": "Helium Budget Proposals website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KristerV/budget-proposals.git"
+  },
+  "author": "Krister Viirsaar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KristerV/budget-proposals/issues"
+  },
+  "homepage": "https://github.com/KristerV/budget-proposals#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "nodemon": "^1.11.0"
+  }
+}
