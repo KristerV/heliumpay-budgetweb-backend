@@ -3,17 +3,23 @@ const express = require('express')
 const app = express()
 
 app.get('/', async (req, res) => {
-	const govdata = await new Promise((resolve, reject) => {
-		child_process.exec('dash-cli getgovernanceinfo', (err, result) => {
-			if (err)
-				reject(err)
-			else
-				resolve(result)
+	try {
+		const govdata = await new Promise((resolve, reject) => {
+			child_process.exec('dash-cli getgovernanceinfo', (err, result) => {
+				if (err)
+					reject(err)
+				else
+					resolve(result)
+			})
 		})
-	}).catch((e) => {
-		res.send(e)
-	})
-	res.send(JSON.stringify(govdata))
+		res.send(JSON.stringify(govdata))
+	} catch(e) {
+		let humanReadable = {
+			cmd: e.cmd,
+			message: e.toString()
+		};
+		res.send(JSON.stringify(humanReadable, null, 4))
+	}
 })
 
 app.listen(3000, () => {
