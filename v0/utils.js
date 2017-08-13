@@ -12,3 +12,7 @@ module.exports.formatResponse = function (data, req) {
 
 	return formatted
 }
+
+module.exports.getFullUrl = (req) => {
+	return req.protocol + '://' + req.get('host') + req.originalUrl.replace(/\/$/, '')
+}

@@ -1,17 +1,7 @@
 const express = require('express')
 const app = express()
-const routerV0 = express.Router();
 const requireAll = require('require-all')
 const utilsV0 = require('./v0/utils')
-
-// Create router for each version
-const versions = ['v0']
-let routers = [];
-versions.forEach(v => {
-	const router = express.Router()
-	app.use('/'+v, router)
-	routers.push(router)
-})
 
 // Find all routes.js files
 const allRoutes = requireAll({
@@ -29,18 +19,22 @@ function importObject(obj, currentRoute) {
 	for (const key in obj) {
 		if (!obj.hasOwnProperty(key))
 			continue
-		if (typeof obj[key] === 'function') {
+		if (typeof obj[key] === 'function')
 			obj[key](router) // Import
-			allRoutesStrings.push(currentRoute) // Save for display
-		} else
+		else
 			importObject(obj[key], currentRoute + '/' + key) // Recurse
 	}
+	router.stack.forEach(function(r){
+		if (r.route && r.route.path){
+			allRoutesStrings.push(currentRoute + r.route.path)
+		}
+	})
 }
 importObject(allRoutes, '')
 
-// Root response
+// Root route
 app.get('/', async (req, res) => {
-	const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl.replace(/\/$/, '')
+	const fullUrl = utilsV0.getFullUrl(req)
 	let routesUrls = [];
 	allRoutesStrings.forEach(r => routesUrls.push(fullUrl + r))
 	const data = {"All available endpoints": routesUrls.sort()}

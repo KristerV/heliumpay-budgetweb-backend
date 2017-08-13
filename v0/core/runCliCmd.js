@@ -20,5 +20,13 @@ module.exports = async function(cmd) {
 			message: e.toString().replace(/\n/g, '; ')
 		};
 	}
+
+	// Try return an object
+	if (typeof data === 'string') {
+		try {
+			data = JSON.parse(data)
+		} catch(e) {console.warn("runCliCmd: Can't JSON.parse this string")}
+	}
+
 	return data
 }
