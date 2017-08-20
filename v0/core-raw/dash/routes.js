@@ -13,7 +13,7 @@ module.exports = function(app) {
 		let spaceless = route.replace(/ /g, '-')
 		app.get('/'+spaceless, async (req, res) => {
 			const data = await runcli(route)
-			res.send(utils.formatResponse(data, req))
+			res.json(data)
 		})
 	})
 	

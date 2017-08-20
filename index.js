@@ -4,10 +4,18 @@ const requireAll = require('require-all')
 const utilsV0 = require('./v0/utils')
 
 app.use(function(req, res, next) {
+
+	// Format JSON properly
+	res.header("Content-Type", "application/json");
+
+	// Allow all CORS
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
+
+// Also needed to format JSON when using res.json()
+app.set("json spaces", 4)
 
 // Find all routes.js files
 const allRoutes = requireAll({
@@ -44,7 +52,7 @@ app.get('/', async (req, res) => {
 	let routesUrls = [];
 	allRoutesStrings.forEach(r => routesUrls.push(fullUrl + r))
 	const data = {"All available endpoints": routesUrls.sort()}
-	res.send(utilsV0.formatResponse(data, req))
+	res.json(data)
 })
 
 app.listen(3000, () => {

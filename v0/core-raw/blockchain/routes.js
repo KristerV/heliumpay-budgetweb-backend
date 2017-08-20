@@ -12,7 +12,7 @@ module.exports = function(app) {
 	commands.forEach(route => {
 		app.get('/'+route, async (req, res) => {
 			const data = await runcli(route)
-			res.send(utils.formatResponse(data, req))
+			res.json(data)
 		})
 	})
 	
