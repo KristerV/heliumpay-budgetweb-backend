@@ -7,7 +7,7 @@ module.exports.formatResponse = function (data, req) {
 	let formatted = JSON.stringify(data, null, 4)
 
 	// Make response readable in browser
-	if (req && req.headers['user-agent']) {
+	if (req && req.headers['user-agent'].match(/(Mozilla|Chrome|Apple)/g)) {
 		formatted = '<pre>' + formatted + '</pre>'
 		formatted = formatted.replace(/"(https?:\/\/.*)"/g, '<a href="$1">$1</a>')
 	}

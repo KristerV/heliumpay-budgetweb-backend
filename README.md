@@ -26,8 +26,8 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 - [ ] **Stage 1** - GET all info
 	- [ ] Proposals list
 		- [ ] Current Budget information
-		- [ ] List all proposals [new, paid, completed, failed]
-		- [ ] Item: Health, title, author, votes, amount(HLM/USD), payment#
+		- [x] List all proposals [new, paid, completed, failed]
+		- [x] Item: Health, title, author, votes, amount(HLM/USD), payment#
 		- [ ] Filter list
 	- [ ] Proposal
 		- [ ] Details from dash-core
@@ -76,6 +76,14 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 - What does "trustless voting" mean?
 - Domain name ideas?
 - How to have proposal owner accountable after budget allocated?
+
+# API design
+
+```
+v0                           // Alpha version, subject to constant change
+GET v0/core/proposals        // all proposals
+GET v0/core/proposals/:hash  // single proposal
+```
 
 ## TODO
 

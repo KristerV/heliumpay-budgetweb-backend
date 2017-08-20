@@ -1,7 +1,7 @@
 const child_process = require('child_process')
-const conf = require('../config.js')
+const conf = require('./config')
 
-module.exports = async function(cmd) {
+module.exports.runCliCmd = async function(cmd) {
 	let data
 	try {
 		data = await new Promise((resolve, reject) => {

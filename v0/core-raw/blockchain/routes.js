@@ -1,17 +1,16 @@
 const utils = require('../../utils')
-const runcli = require('../runCliCmd')
+const runcli = require('../../core-utils').runCliCmd
 
 module.exports = function(app) {
 	const commands = [
-		'getgovernanceinfo',
-		'getpoolinfo',
-		'mnsync status',
-		'masternodelist'
+		'getblockchaininfo',
+		'getblockcount',
+		'getdifficulty',
+		'getspentinfo',
 	]
 
 	commands.forEach(route => {
-		let spaceless = route.replace(/ /g, '-')
-		app.get('/'+spaceless, async (req, res) => {
+		app.get('/'+route, async (req, res) => {
 			const data = await runcli(route)
 			res.send(utils.formatResponse(data, req))
 		})
