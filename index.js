@@ -3,6 +3,12 @@ const app = express()
 const requireAll = require('require-all')
 const utilsV0 = require('./v0/utils')
 
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
 // Find all routes.js files
 const allRoutes = requireAll({
 	dirname: __dirname,
