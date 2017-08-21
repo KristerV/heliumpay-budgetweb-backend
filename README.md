@@ -2,22 +2,6 @@
 
 A Budget Proposal system for Helium Payments with the Masternode functions that make sense.
 
-**All of this is open for suggestions and we are looking for developers/designers to help.**
-
-## Architecture
-
-- Backend (Node.js)
-	- Helium-core communication
-	- Database for conversations
-	- Public API
-	- Registered user API
-	- Masternode API
-- Database (SQL)
-- Frontend
-	- Mobile first
-	- Bootstrap like CSS framework
-	- React.js auto-update or refresh to update?
-
 ## Development stages
 
 A stage is basically a bunch of features. Starting with the most critical and moving down to nice to have stuff. The front-end will be developed at the same time as backend, but no extra prettyness will be added until main features are implemented (unless we find a front-end dev). The website ideally will be public throughout all of the developemnt.
@@ -29,8 +13,9 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 		- [x] List all proposals [new, paid, completed, failed]
 		- [x] Item: Health, title, author, votes, amount(HLM/USD), payment#
 		- [ ] Filter list
-	- [ ] Proposal
-		- [ ] Details from dash-core
+	- [x] Proposal
+		- [x] Details from dash-core
+	- [ ] SSL support
 - [ ] **Stage 2** - Participate with generated commands
 	- [ ] Vote for proposal
 	- [ ] Submit new proposal
@@ -73,8 +58,6 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 - Solution for hundreds of proposals? Dash doesn't want to lower their entry fee.
 - Markdown vs. WYSIWYG?
 - Is providing the email a privacy concern?
-- What does "trustless voting" mean?
-- Domain name ideas?
 - How to have proposal owner accountable after budget allocated?
 
 # API design
@@ -83,25 +66,8 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 v0                           // Alpha version, subject to constant change
 GET v0/core/proposals        // all proposals
 GET v0/core/proposals/:hash  // single proposal
+GET v0/core/raw/*            // Raw data from the cli
 ```
-
-## TODO
-
-- [x] Ask dashcentral.org if their code is available? [private project]
-- [x] Contact the other developer @sabhiram. [no answer]
-- [x] Learn Dash command line for budget proposals.
-- [x] List out critical and imprtant features
-	- [x] DashCentral features
-	- [x] Dash community fill-ins (i.e. dashvotetracker.com)
-	- [ ] Other coins proposal systems
-- [ ] Watch someone from the Dash community actually contribute and vote.
-- [x] Find help from community (none so far)
-	- [ ] Backend programmer
-	- [ ] Frontend programmer
-	- [ ] Designer
-- [x] What's the MVP?
-- [x] Figure out platform
-- [ ] Buy domain
 
 # Links
 
