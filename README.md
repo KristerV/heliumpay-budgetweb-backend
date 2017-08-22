@@ -22,7 +22,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 		- [ ] Filter list
 	- [x] Proposal
 		- [x] Details from dash-core
-	- [ ] SSL support
+	- [x] SSL support
 - [ ] **Stage 2** - Participate with generated commands
 	- [ ] Vote for proposal
 	- [ ] Submit new proposal
