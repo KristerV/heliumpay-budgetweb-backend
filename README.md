@@ -73,7 +73,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 v0                           // Alpha version, subject to constant change
 GET v0/core/proposals        // all proposals
 GET v0/core/proposals/:hash  // single proposal
-GET v0/core/raw/*            // Raw data from the cli
+GET v0/core/raw-cli/*        // Raw data from the cli
 ```
 
 # Links

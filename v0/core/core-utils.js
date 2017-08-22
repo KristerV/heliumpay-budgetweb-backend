@@ -1,5 +1,5 @@
 const child_process = require('child_process')
-const conf = require('./config')
+const conf = require('../config')
 
 module.exports.runCliCmd = async function(cmd) {
 	let data

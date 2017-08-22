@@ -1,8 +1,8 @@
-const utils = require('../../utils')
+const utils = require('../../../utils')
 const runcli = require('../../core-utils').runCliCmd
 
 module.exports = function(app) {
-	const commands = ['getmininginfo']
+	const commands = ['getinfo']
 
 	commands.forEach(route => {
 		app.get('/'+route, async (req, res) => {

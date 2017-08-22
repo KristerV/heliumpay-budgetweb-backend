@@ -1,5 +1,5 @@
 const utils = require('../../utils')
-const runcli = require('../../core-utils').runCliCmd
+const runcli = require('../core-utils').runCliCmd
 
 module.exports = function(app) {
 
