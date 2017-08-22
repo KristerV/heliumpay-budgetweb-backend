@@ -25,7 +25,7 @@ module.exports.runCliCmd = async function(cmd) {
 	if (typeof data === 'string') {
 		try {
 			data = JSON.parse(data)
-		} catch(e) {console.warn("runCliCmd: Can't JSON.parse this string")}
+		} catch(e) {console.debug("runCliCmd: Data is not JSON")}
 	}
 
 	return data
