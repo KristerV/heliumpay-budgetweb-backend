@@ -2,6 +2,13 @@
 
 A Budget Proposal system for Helium Payments with the Masternode functions that make sense.
 
+## How to run
+
+1. Clone both the back and frontend.
+1. Install dashd and dash-cli to your (linux) system.
+1. Copy `config.example.js` to `config.js` and change contents (in root directories).
+1. Run `dashd` and start the back and frontend with `npm run dev` separately.
+
 ## Development stages
 
 A stage is basically a bunch of features. Starting with the most critical and moving down to nice to have stuff. The front-end will be developed at the same time as backend, but no extra prettyness will be added until main features are implemented (unless we find a front-end dev). The website ideally will be public throughout all of the developemnt.
