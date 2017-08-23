@@ -61,6 +61,9 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 		- [ ] Incidents history
 - [ ] **Stage X** - Backlog
 	- Notifications (email/push/web)
+	- Maintenance notice
+	- Analytics (privacy respecting possibly custom solution)
+		- Important for scheduled maintenance
 
 # Questions still unanswered
 
