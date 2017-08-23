@@ -64,6 +64,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 	- Maintenance notice
 	- Analytics (privacy respecting possibly custom solution)
 		- Important for scheduled maintenance
+	- Rating system like https://www.dashtreasury.org
 
 # Questions still unanswered
 
