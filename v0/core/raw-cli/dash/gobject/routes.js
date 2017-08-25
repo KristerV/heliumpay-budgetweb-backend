@@ -11,8 +11,6 @@ module.exports = function(app) {
 
 	app.get('/list', async (req, res) => {
 		const data = await runcli('gobject list')
-		for (const item of Object.values(data))
-			console.log(JSON.parse(item.DataString)[0][1].start_epoch)
 		res.json(data)
 	})
 
