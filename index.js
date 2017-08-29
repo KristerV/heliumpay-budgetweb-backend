@@ -1,4 +1,5 @@
 const express = require('express')
+const createRouter = require('express-promise-router')
 const app = express()
 const requireAll = require('require-all')
 const utilsV0 = require('./v0/utils')
@@ -28,7 +29,7 @@ const allRoutes = requireAll({
 // Import all routes
 let allRoutesStrings = []
 function importObject(obj, currentRoute) {
-	const router = express.Router()
+	const router = createRouter()
 	app.use(currentRoute, router)
 	for (const key in obj) {
 		if (!obj.hasOwnProperty(key))
