@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/KristerV/budget-proposals#readme",
   "dependencies": {
+    "child-process-promise": "^2.2.1",
     "express": "^4.15.4",
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
