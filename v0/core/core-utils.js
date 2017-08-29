@@ -1,11 +1,15 @@
 const child_process = require('child_process')
 const conf = require('../config')
 
-module.exports.runCliCmd = async function(cmd) {
+module.exports.runCliCmd = async function(options) {
 	let data
+	
+	if (typeof options === 'string')
+		options = [options]
+
 	try {
 		data = await new Promise((resolve, reject) => {
-			child_process.exec(conf["cli-command"] + ' ' + cmd, (err, result) => {
+			child_process.execFile(conf["cli-command"], options, (err, result) => {
 				if (err)
 					reject(err)
 				else

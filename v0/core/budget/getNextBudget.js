@@ -6,11 +6,11 @@ module.exports = async () => {
 
 	const govinfo = await runcli('getgovernanceinfo')
 	const latestHash = await runcli('getbestblockhash')
-	const latestBlock = await runcli('getblock '+latestHash)
+	const latestBlock = await runcli(['getblock', latestHash])
 	const oldBlockHeight = latestBlock.height - govinfo.superblockcycle
-	const oldBlockHash = await runcli('getblockhash ' + oldBlockHeight)
-	const oldBlock = await runcli('getblock ' + oldBlockHash)
-	const budgetTotal = await runcli('getsuperblockbudget ' + govinfo.nextsuperblock)
+	const oldBlockHash = await runcli(['getblockhash', oldBlockHeight])
+	const oldBlock = await runcli(['getblock', oldBlockHash])
+	const budgetTotal = await runcli(['getsuperblockbudget', govinfo.nextsuperblock])
 
 	const blocktimeSec = (latestBlock.time - oldBlock.time) / govinfo.superblockcycle
 	const paymentDelay = (govinfo.nextsuperblock - latestBlock.height) * blocktimeSec

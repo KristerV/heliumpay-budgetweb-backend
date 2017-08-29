@@ -41,7 +41,7 @@ function isProposalClosed(proposal) {
 // Not the best place for this function
 async function getLastSuperblockTime() {
 	const govinfo = await runcli('getgovernanceinfo')
-	const lastSuperblockHash = await runcli('getblockhash ' + govinfo.lastsuperblock)
-	const lastSuperblock = await runcli('getblock ' + lastSuperblockHash)
+	const lastSuperblockHash = await runcli(['getblockhash', govinfo.lastsuperblock])
+	const lastSuperblock = await runcli(['getblock', lastSuperblockHash])
 	return lastSuperblock.time
 }
