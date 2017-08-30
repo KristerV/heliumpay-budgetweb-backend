@@ -18,19 +18,18 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 
 - [x] **Stage 0** - Figure out theoretical stuff (this README)
 - [ ] **Stage 1** - GET all info
-	- [ ] Proposals list
+	- [x] Proposals list
 		- [x] Current Budget information
 		- [x] List all proposals [new, paid, completed, failed]
 		- [x] Item: Health, title, author, votes, amount(HLM/USD), payment#
-		- [ ] Filter list
+		- [x] Filter list
 	- [x] Proposal
 		- [x] Details from dash-core
-	- [ ] Other
+	- [x] Other
 		- [x] SSL support
-		- [ ] Move systemd services to git
 		- [x] Make systemd manage git and npm on restart
 - [ ] **Stage 2** - Participate with generated commands
-	- [ ] Vote for proposal
+	- [x] Vote for proposal
 	- [ ] Submit new proposal
 - [ ] **Stage 3** - User based actions
 	- [ ] User management
