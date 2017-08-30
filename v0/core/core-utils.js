@@ -1,5 +1,6 @@
 const { execFile } = require('child-process-promise')
 const conf = require('../config')
+const { InternalServerError } = require('../errors')
 
 module.exports.runCliCmd = async function(options) {
 	let data
@@ -12,11 +13,7 @@ module.exports.runCliCmd = async function(options) {
 		data = stdout
 		data.status = 200
 	} catch(e) {
-		data = {
-			status: 500,
-			command: e.cmd,
-			message: e.toString().replace(/\n/g, '; ')
-		}
+		throw new InternalServerError(e.toString().replace(/\n/g, '; '))
 	}
 
 	// Try return an object

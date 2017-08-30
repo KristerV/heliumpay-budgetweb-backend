@@ -3,6 +3,7 @@ const createRouter = require('express-promise-router')
 const app = express()
 const requireAll = require('require-all')
 const utilsV0 = require('./v0/utils')
+const middlewareV0 = require('./v0/middleware')
 
 app.use(function(req, res, next) {
 
@@ -55,6 +56,8 @@ app.get('/', async (req, res) => {
 	const data = {"All available endpoints": routesUrls.sort()}
 	res.json(data)
 })
+
+app.use(middlewareV0.errors())
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000!')
