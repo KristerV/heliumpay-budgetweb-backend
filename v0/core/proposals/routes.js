@@ -3,7 +3,6 @@ const runcli = require('../core-utils').runCliCmd
 const statuses = require('./statuses')
 
 module.exports = function(app) {
-
 	app.get('/', async (req, res) => {
 		const data = await runcli(['gobject', 'list'])
 		const withStatuses = await statuses.addListStatuses(data)
@@ -18,5 +17,4 @@ module.exports = function(app) {
 		const data = await runcli(['gobject', 'get', req.params.hash])
 		res.json(data)
 	})
-
 }

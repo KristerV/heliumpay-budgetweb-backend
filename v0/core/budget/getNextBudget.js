@@ -14,9 +14,10 @@ module.exports = async () => {
 
 	const blocktimeSec = (latestBlock.time - oldBlock.time) / govinfo.superblockcycle
 	const paymentDelay = (govinfo.nextsuperblock - latestBlock.height) * blocktimeSec
-	const paymentDate = moment(latestBlock.time*1000).add(paymentDelay, 'seconds')
-	const voteDeadlineDelay = (govinfo.nextsuperblock - latestBlock.height - lockedBlocks) * blocktimeSec
-	const voteDeadlineDate = moment(latestBlock.time*1000).add(voteDeadlineDelay, 'seconds')
+	const paymentDate = moment(latestBlock.time * 1000).add(paymentDelay, 'seconds')
+	const voteDeadlineDelay =
+		(govinfo.nextsuperblock - latestBlock.height - lockedBlocks) * blocktimeSec
+	const voteDeadlineDate = moment(latestBlock.time * 1000).add(voteDeadlineDelay, 'seconds')
 	const superblockHeight = govinfo.nextsuperblock
 
 	return {
