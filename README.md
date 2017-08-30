@@ -10,6 +10,8 @@ A Budget Proposal system for Helium Payments with the Masternode functions that 
 4. Build the docker images: `docker-compose build` (re-run whenever Dockerfile or package.json changes)
 5. Start the containers: `docker-compose up`
 
+This will start the app along with `dashd`. Also run [the frontend](https://github.com/KristerV/heliumpay-budgetweb-frontend).
+
 ## Development stages
 
 A stage is basically a bunch of features. Starting with the most critical and moving down to nice to have stuff. The front-end will be developed at the same time as backend, but no extra prettyness will be added until main features are implemented (unless we find a front-end dev). The website ideally will be public throughout all of the developemnt.
