@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": ["error", { "semi": false, "useTabs": true, "tabWidth": 4 }]
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  }
+}
