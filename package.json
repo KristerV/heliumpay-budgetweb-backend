@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon -L index.js",
     "lint": "eslint .",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "db:migrations:make": "node scripts/createMigrationFile.js",
+    "db:migrations:run": "node scripts/runMigrations.js",
+    "db:migrations:rollback": "node scripts/rollbackMigrations.js"
   },
   "repository": {
     "type": "git",
@@ -22,16 +25,21 @@
     "child-process-promise": "^2.2.1",
     "express": "^4.15.4",
     "express-promise-router": "^2.0.0",
+    "knex": "^0.13.0",
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
+    "pg": "^7.2.0",
     "require-all": "^2.2.0"
   },
   "devDependencies": {
+    "chalk": "^2.1.0",
     "eslint": "^4.5.0",
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-prettier": "^2.2.0",
+    "fs-extra": "^4.0.1",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.4",
+    "minimist": "^1.2.0",
     "prettier": "^1.6.1"
   },
   "lint-staged": {

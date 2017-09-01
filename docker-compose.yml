@@ -7,6 +7,13 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=heliumlabs
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+
   db:
     image: postgres
     ports:
