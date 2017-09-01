@@ -1,8 +1,17 @@
-version: "3"
+version: "2"
+
 services:
-  webserver:
+  api:
     build: .
     ports:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: heliumlabs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
