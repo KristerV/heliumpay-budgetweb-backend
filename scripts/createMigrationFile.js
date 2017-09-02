@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const minimist = require('minimist')
 const chalk = require('chalk')
+const moment = require('moment')
 
 const argv = minimist(process.argv.slice(2))
 const name = argv._[0]
@@ -13,26 +14,8 @@ if (!name) {
 
 createMigrationFile()
 
-// Ensure that we have 2 places for each of the date segments.
-function padDate(num) {
-	const segment = `${num}`
-	return segment[1] ? segment : `0${segment}`
-}
-
-function yyyymmddhhmmss() {
-	const d = new Date()
-	return (
-		d.getFullYear().toString() +
-		padDate(d.getMonth() + 1) +
-		padDate(d.getDate()) +
-		padDate(d.getHours()) +
-		padDate(d.getMinutes()) +
-		padDate(d.getSeconds())
-	)
-}
-
 function createMigrationFile() {
-	const filename = `${yyyymmddhhmmss()}_${name}.js`
+	const filename = `${moment().format('YYYYMMDDHHmmss')}_${name}.js`
 	const outputFilePath = path.resolve(__dirname, '../database/migrations', filename)
 
 	fs.ensureFileSync(outputFilePath)
