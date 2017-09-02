@@ -32,10 +32,10 @@ const table = 'users'
  */
 
 /**
- * User.create creates a new user
+ * @function create - creates a new user
  * @param {UserAttributes} attrs - The attributes of the user to create
  * @param {*=} trx - The optional transaction context
- * @return {User} - The newly created user
+ * @return {Promise.<User>} - The newly created user
  */
 module.exports.create = async function create(attrs, trx) {
 	const db = await getDbDriver()
@@ -46,11 +46,11 @@ module.exports.create = async function create(attrs, trx) {
 }
 
 /**
- * User.update updates an existing user
+ * @function update - updates an existing user
  * @param {number} id - The id of the user to update
  * @param {UserAttributes} attrs - The attributes of the user to update
  * @param {*=} trx - The optional transaction context
- * @return {User} - The updated user
+ * @return {Promise.<User>} - The updated user
  */
 module.exports.update = async function update(id, attrs, trx) {
 	const db = await getDbDriver()
@@ -66,9 +66,9 @@ module.exports.update = async function update(id, attrs, trx) {
 }
 
 /**
- * User.findOne finds an existing user that matches the provided attributes
+ * @function findOne - finds an existing user that matches the provided attributes
  * @param {UserAttributes} attrs - The attributes of the user to match against
- * @return {?User} - The matched user, null if not found
+ * @return {Promise.<?User>} - The matched user, null if not found
  */
 module.exports.findOne = async function findOne(attrs) {
 	const db = await getDbDriver()
@@ -81,9 +81,9 @@ module.exports.findOne = async function findOne(attrs) {
 }
 
 /**
- * User.findAll finds all existing user that match the provided attributes
+ * @function findAll - finds all existing user that match the provided attributes
  * @param {UserAttributes} attrs - The attributes of the user to match against
- * @return {User[]} - The matched users
+ * @return {Promise.<User[]>} - The matched users
  */
 module.exports.findAll = async function findAll(attrs) {
 	const db = await getDbDriver()
