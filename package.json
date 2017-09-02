@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/KristerV/budget-proposals#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "child-process-promise": "^2.2.1",
     "express": "^4.15.4",
     "express-promise-router": "^2.0.0",
