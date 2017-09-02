@@ -19,10 +19,9 @@ app.use(function(req, res, next) {
 app.set('json spaces', 4)
 
 // Find all routes.js files
-const allRoutes = requireAll({
-	dirname: __dirname,
+const allV0Routes = requireAll({
+	dirname: `${__dirname}/v0/routes`,
 	filter: /^routes\.js$/,
-	excludeDirs: /^(\.git|node_modules)$/,
 	recursive: true
 })
 
@@ -43,7 +42,7 @@ function importObject(obj, currentRoute) {
 		}
 	})
 }
-importObject(allRoutes, '')
+importObject(allV0Routes, '/v0')
 
 // Root route
 app.get('/', async (req, res) => {
