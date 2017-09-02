@@ -1,4 +1,3 @@
-const utils = require('../../utils')
 const runcli = require('../core-utils').runCliCmd
 const statuses = require('./statuses')
 

@@ -1,6 +1,6 @@
 const { execFile } = require('child-process-promise')
-const conf = require('../config')
-const { InternalServerError } = require('../errors')
+const conf = require('../../config')
+const { InternalServerError } = require('../../errors')
 
 module.exports.runCliCmd = async function(options) {
 	let data
