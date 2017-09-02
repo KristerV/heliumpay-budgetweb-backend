@@ -1,4 +1,4 @@
-const { User } = require('../../database/models')
+const { User } = require('../../../database/models')
 
 module.exports = async (req, res) => {
 	const attrs = req.body
