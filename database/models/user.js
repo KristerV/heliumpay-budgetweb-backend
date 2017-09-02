@@ -37,7 +37,7 @@ const table = 'users'
  * @param {*=} trx - The optional transaction context
  * @return {Promise.<User>} - The newly created user
  */
-module.exports.create = async function create(attrs, trx) {
+module.exports.create = async (attrs, trx) => {
 	const db = await getDbDriver()
 	// TODO: bcrypt attrs.password
 	const [user] = await withTransaction(trx, db(table).insert(createTimestamps(attrs), '*'))
@@ -52,7 +52,7 @@ module.exports.create = async function create(attrs, trx) {
  * @param {*=} trx - The optional transaction context
  * @return {Promise.<User>} - The updated user
  */
-module.exports.update = async function update(id, attrs, trx) {
+module.exports.update = async (id, attrs, trx) => {
 	const db = await getDbDriver()
 	// TODO: bcrypt attrs.password if provided
 	const [user] = await withTransaction(
@@ -70,7 +70,7 @@ module.exports.update = async function update(id, attrs, trx) {
  * @param {UserAttributes} attrs - The attributes of the user to match against
  * @return {Promise.<?User>} - The matched user, null if not found
  */
-module.exports.findOne = async function findOne(attrs) {
+module.exports.findOne = async attrs => {
 	const db = await getDbDriver()
 	const user = await db
 		.first()
@@ -85,7 +85,7 @@ module.exports.findOne = async function findOne(attrs) {
  * @param {UserAttributes} attrs - The attributes of the user to match against
  * @return {Promise.<User[]>} - The matched users
  */
-module.exports.findAll = async function findAll(attrs) {
+module.exports.findAll = async attrs => {
 	const db = await getDbDriver()
 	const user = await db
 		.select()
