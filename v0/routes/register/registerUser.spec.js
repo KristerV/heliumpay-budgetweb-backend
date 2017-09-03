@@ -11,7 +11,7 @@ module.exports = test => {
 		return req.send(attrs)
 	}
 
-	test(`${registerEndpoint} should register user`, async t => {
+	test(`POST ${registerEndpoint} should register user`, async t => {
 		const validAttrs = [
 			{ username: 'test1', password: '123456' },
 			{ username: 'test2', password: '234567', email: 'test@test.com' }
@@ -31,14 +31,14 @@ module.exports = test => {
 			// private fields, should never be returned by the endpoint
 			t.false('emailConfirmationHash' in body)
 			t.false('password' in body)
-
+			// verify password was hashed
 			const user = await User.findOne({ id: body.id })
 			const matches = await User.comparePassword(user, attrs.password)
 			t.truthy(matches)
 		}
 	})
 
-	test(`${registerEndpoint} should not register user with invalid attributes`, async t => {
+	test(`POST ${registerEndpoint} should not register user with invalid attributes`, async t => {
 		const invalidAttrs = [
 			null,
 			{},
@@ -56,7 +56,7 @@ module.exports = test => {
 		}
 	})
 
-	test(`${registerEndpoint} should not register user with existing username`, async t => {
+	test(`POST ${registerEndpoint} should not register user with existing username`, async t => {
 		await User.create({ username: 'test', password: '123456' })
 
 		const attrs = { username: 'test', password: '123456' }
@@ -67,7 +67,7 @@ module.exports = test => {
 		t.truthy(body.message)
 	})
 
-	test(`${registerEndpoint} should not register user with existing email`, async t => {
+	test(`POST ${registerEndpoint} should not register user with existing email`, async t => {
 		await User.create({ username: 'test1', password: '123456', email: 'test@test.com' })
 
 		const attrs = { username: 'test2', password: '123456', email: 'test@test.com' }
