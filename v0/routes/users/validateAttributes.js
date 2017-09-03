@@ -1,4 +1,5 @@
 const yup = require('yup')
+const { getValidationErrors } = require('../utils')
 
 const schema = yup.object().shape({
 	username: yup.string().required(),
@@ -10,14 +11,6 @@ const schema = yup.object().shape({
 })
 
 module.exports = async attrs => {
-	try {
-		await schema.validate(attrs)
-	} catch (err) {
-		// if it's a validation error, return errors array
-		if (err.errors) {
-			return err.errors
-		} else {
-			throw err
-		}
-	}
+	const errors = await getValidationErrors(schema, attrs)
+	return errors
 }
