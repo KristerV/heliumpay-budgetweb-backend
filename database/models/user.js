@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const omit = require('lodash.omit')
 const getDbDriver = require('../getDbDriver')
 const { createTimestamps, updateTimestamps, withTransaction } = require('./utils')
@@ -41,7 +42,7 @@ const privateFields = ['password', 'emailConfirmationHash']
  */
 module.exports.create = async (attrs, trx) => {
 	const db = await getDbDriver()
-	// TODO: bcrypt attrs.password
+	attrs.password = await bcrypt.hash(attrs.password, 10)
 	const [user] = await withTransaction(trx, db(table).insert(createTimestamps(attrs), '*'))
 
 	return user
@@ -56,7 +57,9 @@ module.exports.create = async (attrs, trx) => {
  */
 module.exports.update = async (id, attrs, trx) => {
 	const db = await getDbDriver()
-	// TODO: bcrypt attrs.password if provided
+	if (attrs.password) {
+		attrs.password = await bcrypt.hash(attrs.password, 10)
+	}
 	const [user] = await withTransaction(
 		trx,
 		db(table)
@@ -104,4 +107,15 @@ module.exports.findAll = async attrs => {
  */
 module.exports.stripPrivateFields = user => {
 	return omit(user, privateFields)
+}
+
+/**
+ * @function comparePassword - compare the user's stored password against the provided one
+ * @param {User} user - The user
+ * @param {stirng} password - The password to compare the stored password to
+ * @return {boolean} - whether or not the password matches
+ */
+module.exports.comparePassword = async (user, password) => {
+	const matches = await bcrypt.compare(password, user.password)
+	return matches
 }

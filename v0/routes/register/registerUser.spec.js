@@ -14,7 +14,7 @@ module.exports = test => {
 	test(`${registerEndpoint} should register user`, async t => {
 		const validAttrs = [
 			{ username: 'test1', password: '123456' },
-			{ username: 'test2', password: '123456', email: 'test@test.com' }
+			{ username: 'test2', password: '234567', email: 'test@test.com' }
 		]
 
 		for (const attrs of validAttrs) {
@@ -31,6 +31,10 @@ module.exports = test => {
 			// private fields, should never be returned by the endpoint
 			t.false('emailConfirmationHash' in body)
 			t.false('password' in body)
+
+			const user = await User.findOne({ id: body.id })
+			const matches = await User.comparePassword(user, attrs.password)
+			t.truthy(matches)
 		}
 	})
 
