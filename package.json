@@ -28,6 +28,7 @@
     "express": "^4.15.4",
     "express-promise-router": "^2.0.0",
     "knex": "^0.13.0",
+    "lodash.omit": "^4.5.0",
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
     "pg": "^7.2.0",

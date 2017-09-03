@@ -10,5 +10,5 @@ module.exports = async (req, res) => {
 		})
 	)
 
-	res.json(user)
+	res.json(User.stripPrivateFields(user))
 }

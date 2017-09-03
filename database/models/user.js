@@ -1,3 +1,4 @@
+const omit = require('lodash.omit')
 const getDbDriver = require('../getDbDriver')
 const { createTimestamps, updateTimestamps, withTransaction } = require('./utils')
 
@@ -7,6 +8,7 @@ const { createTimestamps, updateTimestamps, withTransaction } = require('./utils
  */
 
 const table = 'users'
+const privateFields = ['password', 'emailConfirmationHash']
 
 /**
  * @typedef User
@@ -93,4 +95,13 @@ module.exports.findAll = async attrs => {
 		.where(attrs)
 
 	return user
+}
+
+/**
+ * @function stripPrivateFields - strips private fields from a user object
+ * @param {User} user - The user
+ * @return {UserPublic} - The user without private fields
+ */
+module.exports.stripPrivateFields = user => {
+	return omit(user, privateFields)
 }

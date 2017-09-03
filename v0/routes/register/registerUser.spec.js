@@ -21,7 +21,8 @@ module.exports = test => {
 		t.is(body.createdAt, body.updatedAt)
 		t.is(body.username, attrs.username)
 		t.is(body.email, null)
-		t.is(body.emailConfirmationHash, null)
 		t.is(body.emailConfirmed, false)
+		t.is(body.emailConfirmationHash, undefined)
+		t.is(body.password, undefined)
 	})
 }
