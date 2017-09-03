@@ -4,10 +4,10 @@
   "description": "Helium Budget Proposals website",
   "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env nodemon -L index.js",
+    "dev": "nodemon -L index.js",
     "lint": "eslint .",
     "precommit": "lint-staged",
-    "test": "dotenv -e .env.test ava --serial",
+    "test": "ava --serial",
     "db:migrations:make": "node scripts/createMigrationFile.js",
     "db:migrations:run": "node scripts/runMigrations.js",
     "db:migrations:rollback": "node scripts/rollbackMigrations.js"

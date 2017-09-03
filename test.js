@@ -1,3 +1,5 @@
+require('dotenv').config({ path: '.env.test' })
+
 const requireAll = require('require-all')
 const traverse = require('traverse')
 const test = require('ava')

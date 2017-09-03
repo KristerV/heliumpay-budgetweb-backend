@@ -1,3 +1,5 @@
+require('dotenv').config({ path: '.env' })
+
 const express = require('express')
 const createRouter = require('express-promise-router')
 const app = express()
