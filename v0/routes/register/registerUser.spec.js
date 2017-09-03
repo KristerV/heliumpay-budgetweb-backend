@@ -1,4 +1,5 @@
 const request = require('supertest')
+const { User } = require('../../../database/models')
 const { BadRequestError } = require('../../errors')
 const registerUser = require('./registerUser')
 
@@ -11,15 +12,13 @@ module.exports = test => {
 	}
 
 	test(`${registerEndpoint} should register user`, async t => {
-		const { app } = t.context
-
 		const validAttrs = [
 			{ username: 'test1', password: '123456' },
 			{ username: 'test2', password: '123456', email: 'test@test.com' }
 		]
 
 		for (const attrs of validAttrs) {
-			const { status, body } = await makeRequest(app, attrs)
+			const { status, body } = await makeRequest(t.context.app, attrs)
 
 			t.is(status, 200, body.message)
 			t.truthy(body)
@@ -29,15 +28,13 @@ module.exports = test => {
 			t.is(body.username, attrs.username)
 			t.is(body.email, attrs.email || null)
 			t.is(body.emailConfirmed, false)
-			// private fields, should never be returned by api endpoint
-			t.is(body.emailConfirmationHash, undefined)
-			t.is(body.password, undefined)
+			// private fields, should never be returned by the endpoint
+			t.false('emailConfirmationHash' in body)
+			t.false('password' in body)
 		}
 	})
 
 	test(`${registerEndpoint} should not register user with invalid attributes`, async t => {
-		const { app } = t.context
-
 		const invalidAttrs = [
 			null,
 			{},
@@ -47,11 +44,33 @@ module.exports = test => {
 		]
 
 		for (const attrs of invalidAttrs) {
-			const { status, body } = await makeRequest(app, attrs)
+			const { status, body } = await makeRequest(t.context.app, attrs)
 
 			t.is(status, BadRequestError.CODE, body.message)
 			t.is(body.code, BadRequestError.CODE)
 			t.truthy(body.message)
 		}
+	})
+
+	test(`${registerEndpoint} should not register user with existing username`, async t => {
+		await User.create({ username: 'test', password: '123456' })
+
+		const attrs = { username: 'test', password: '123456' }
+		const { status, body } = await makeRequest(t.context.app, attrs)
+
+		t.is(status, BadRequestError.CODE, body.message)
+		t.is(body.code, BadRequestError.CODE)
+		t.truthy(body.message)
+	})
+
+	test(`${registerEndpoint} should not register user with existing email`, async t => {
+		await User.create({ username: 'test1', password: '123456', email: 'test@test.com' })
+
+		const attrs = { username: 'test2', password: '123456', email: 'test@test.com' }
+		const { status, body } = await makeRequest(t.context.app, attrs)
+
+		t.is(status, BadRequestError.CODE, body.message)
+		t.is(body.code, BadRequestError.CODE)
+		t.truthy(body.message)
 	})
 }
