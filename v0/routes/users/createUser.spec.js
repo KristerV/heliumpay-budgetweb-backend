@@ -2,17 +2,17 @@ const request = require('supertest')
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { BadRequestError } = require('../../errors')
-const registerUser = require('./registerUser')
+const createUser = require('./createUser')
 
-const registerEndpoint = '/v0/register'
+const createEndpoint = '/v0/users'
 
 module.exports = test => {
 	async function makeRequest(attrs) {
-		const req = request(app).post(registerEndpoint)
+		const req = request(app).post(createEndpoint)
 		return req.send(attrs)
 	}
 
-	test(`POST ${registerEndpoint} should register user`, async t => {
+	test(`POST ${createEndpoint} should create user`, async t => {
 		const validAttrs = [
 			{ username: 'test1', password: '123456' },
 			{ username: 'test2', password: '234567', email: 'test@test.com' }
@@ -39,7 +39,7 @@ module.exports = test => {
 		}
 	})
 
-	test(`POST ${registerEndpoint} should not register user with invalid attributes`, async t => {
+	test(`POST ${createEndpoint} should not create user with invalid attributes`, async t => {
 		const invalidAttrs = [
 			null,
 			{},
@@ -57,7 +57,7 @@ module.exports = test => {
 		}
 	})
 
-	test(`POST ${registerEndpoint} should not register user with existing username`, async t => {
+	test(`POST ${createEndpoint} should not create user with existing username`, async t => {
 		await User.create({ username: 'test', password: '123456' })
 
 		const attrs = { username: 'test', password: '123456' }
@@ -68,7 +68,7 @@ module.exports = test => {
 		t.truthy(body.message)
 	})
 
-	test(`POST ${registerEndpoint} should not register user with existing email`, async t => {
+	test(`POST ${createEndpoint} should not create user with existing email`, async t => {
 		await User.create({ username: 'test1', password: '123456', email: 'test@test.com' })
 
 		const attrs = { username: 'test2', password: '123456', email: 'test@test.com' }
