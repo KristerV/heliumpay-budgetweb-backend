@@ -1,4 +1,5 @@
 const request = require('supertest')
+const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { BadRequestError } = require('../../errors')
 const registerUser = require('./registerUser')
@@ -6,7 +7,7 @@ const registerUser = require('./registerUser')
 const registerEndpoint = '/v0/register'
 
 module.exports = test => {
-	async function makeRequest(app, attrs) {
+	async function makeRequest(attrs) {
 		const req = request(app).post(registerEndpoint)
 		return req.send(attrs)
 	}
@@ -18,7 +19,7 @@ module.exports = test => {
 		]
 
 		for (const attrs of validAttrs) {
-			const { status, body } = await makeRequest(t.context.app, attrs)
+			const { status, body } = await makeRequest(attrs)
 
 			t.is(status, 200, body.message)
 			t.truthy(body)
@@ -48,7 +49,7 @@ module.exports = test => {
 		]
 
 		for (const attrs of invalidAttrs) {
-			const { status, body } = await makeRequest(t.context.app, attrs)
+			const { status, body } = await makeRequest(attrs)
 
 			t.is(status, BadRequestError.CODE, body.message)
 			t.is(body.code, BadRequestError.CODE)
@@ -60,7 +61,7 @@ module.exports = test => {
 		await User.create({ username: 'test', password: '123456' })
 
 		const attrs = { username: 'test', password: '123456' }
-		const { status, body } = await makeRequest(t.context.app, attrs)
+		const { status, body } = await makeRequest(attrs)
 
 		t.is(status, BadRequestError.CODE, body.message)
 		t.is(body.code, BadRequestError.CODE)
@@ -71,7 +72,7 @@ module.exports = test => {
 		await User.create({ username: 'test1', password: '123456', email: 'test@test.com' })
 
 		const attrs = { username: 'test2', password: '123456', email: 'test@test.com' }
-		const { status, body } = await makeRequest(t.context.app, attrs)
+		const { status, body } = await makeRequest(attrs)
 
 		t.is(status, BadRequestError.CODE, body.message)
 		t.is(body.code, BadRequestError.CODE)

@@ -21,11 +21,6 @@ test.before(async t => {
 	await db.migrate.latest()
 })
 
-// before each test, set the app context
-test.beforeEach(async t => {
-	t.context.app = app
-})
-
 // after each test, truncate all tables
 // don't truncate migration tables because rollback checks for which migrations ran
 test.afterEach.always(async () => {
