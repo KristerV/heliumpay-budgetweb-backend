@@ -1,4 +1,4 @@
-const { signJwt } = require('../utils')
+const { signJwt } = require('../../utils')
 const { User } = require('../../../database/models')
 const { BadRequestError, UnauthorizedError } = require('../../errors')
 

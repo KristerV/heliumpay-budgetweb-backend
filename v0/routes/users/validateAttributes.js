@@ -1,5 +1,5 @@
 const yup = require('yup')
-const { getValidationErrors } = require('../utils')
+const { getValidationErrors } = require('../../utils')
 
 const schema = yup.object().shape({
 	username: yup.string().required(),

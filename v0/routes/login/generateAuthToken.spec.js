@@ -2,7 +2,7 @@ const request = require('supertest')
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { BadRequestError, UnauthorizedError } = require('../../errors')
-const { verifyJwt } = require('../utils')
+const { verifyJwt } = require('../../utils')
 const generateAuthToken = require('./generateAuthToken')
 
 const loginEndpoint = '/v0/login'
