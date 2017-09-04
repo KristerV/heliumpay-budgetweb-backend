@@ -43,9 +43,10 @@ module.exports = test => {
 		const invalidAttrs = [
 			null,
 			{},
-			{ username: 'test1' },
+			{ username: 'test' },
 			{ password: '123456' },
-			{ username: 'test1', password: '12345' }
+			{ username: 'test', password: '12345' },
+			{ email: 'test@test.com', password: '123456' }
 		]
 
 		for (const attrs of invalidAttrs) {
