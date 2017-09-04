@@ -18,10 +18,10 @@ module.exports = test => {
 
 	test(`GET ${selfEndpoint} should require valid auth token`, async t => {
 		const expiredToken = await signJwt(
-			// backdate token 30 seconds
-			{ iat: Math.floor(Date.now() / 1000) - 10 },
-			// set token to expire in 5s
-			{ expiresIn: '5s' }
+			// backdate token 2 seconds
+			{ iat: Math.floor(Date.now() / 1000) - 2 },
+			// set token to expire in 1 second
+			{ expiresIn: '1s' }
 		)
 		const invalidTokens = [null, 'invalid', expiredToken]
 
