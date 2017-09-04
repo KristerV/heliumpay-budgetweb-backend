@@ -7,16 +7,15 @@ RUN tar -xvf /tmp/dashcore-*.tar.gz -C /tmp/
 RUN cp /tmp/dashcore*/bin/*  /usr/local/bin
 RUN rm -rf /tmp/dashcore*
 
-# create app directory
-WORKDIR /usr/src/app
-# copy package.json to app directory
-COPY package.json /usr/src/app
+WORKDIR /opt/app
 # install dependencies before copying the full source
 # this makes use of layer caching to only reinstall when package.json changes
 # http://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/
-RUN npm install
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
 # copy app src
-COPY . /usr/src/app
+COPY . /opt/app
 
 EXPOSE 3000
 CMD dashd -daemon && npm run dev

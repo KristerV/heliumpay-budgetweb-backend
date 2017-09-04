@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules/
+      - .:/opt/app
+      - /opt/app/node_modules/
     # pull container env vars from .env file
     # we need to override DB_HOST because docker-compose enables communication between containers
     # by bridging the network using the service name
