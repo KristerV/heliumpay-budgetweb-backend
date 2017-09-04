@@ -10,7 +10,8 @@ A Budget Proposal system for Helium Payments with the Masternode functions that 
 1. Start the docker daemon with `systemctl start docker` (Linux)
 4. Build the docker images: `docker-compose build` (re-run whenever Dockerfile or package.json changes)
 5. Start the containers: `docker-compose up`
-6. Wait until blockchain is downloaded. Check progress on [localhost:3000](http://localhost:3000/v0/core/raw-cli/blockchain/getblockcount).
+6. Run the migrations: `docker-compose exec api npm run db:migrations:run`
+7. Wait until blockchain is downloaded. Check progress on [localhost:3000](http://localhost:3000/v0/core/raw-cli/blockchain/getblockcount).
 
 **Notes**
 
@@ -18,6 +19,9 @@ A Budget Proposal system for Helium Payments with the Masternode functions that 
 - You may even need a reboot if you just installed docker.
 
 This will start the app along with `dashd`. Also run [the frontend](https://github.com/KristerV/heliumpay-budgetweb-frontend).
+
+### Tests
+Tests are run against a separate test database with `npm run test -- --verbose`. Make sure you run `docker-compose up` first. Migrations are automatically run during tests.
 
 ## Development stages
 
