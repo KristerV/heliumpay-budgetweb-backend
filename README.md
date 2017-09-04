@@ -21,7 +21,28 @@ A Budget Proposal system for Helium Payments with the Masternode functions that 
 This will start the app along with `dashd`. Also run [the frontend](https://github.com/KristerV/heliumpay-budgetweb-frontend).
 
 ### Tests
-Tests are run against a separate test database with `npm run test -- --verbose`. Make sure you run `docker-compose up` first. Migrations are automatically run during tests.
+Run the test suite:
+```
+npm run test -- --verbose
+```
+
+Tests are run against a separate test database. Make sure you run `docker-compose up` first. Migrations are automatically run during tests.
+
+### Migrations
+Creates a new migration file in database/migrations:
+```
+npm run db:migrations:make [name]
+```
+
+Runs migrations inside the docker container (run _docker-compose up_ first):
+```
+docker-compose exec api npm run db:migrations:run
+```
+
+Rollback the latest migration from within the docker container:
+```
+docker-compose exec api npm run db:migrations:rollback
+```
 
 ## Development stages
 
