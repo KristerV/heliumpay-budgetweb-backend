@@ -23,6 +23,9 @@ This will start the app along with `dashd`. Also run [the frontend](https://gith
 ### Tests
 Run the test suite:
 ```
+npm run test
+npm run test */**/createUser.test.js # run tests for a specific file
+npm run test */**/user/*.test.js # run tests for a specific directory
 npm run test -- --verbose
 ```
 
