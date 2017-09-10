@@ -18,7 +18,7 @@ async function makeRequest(token, id) {
 	return req
 }
 
-test(`GET ${selfEndpoint} should require valid auth token`, async t => {
+test(`GET ${selfEndpoint} should not accept valid auth token`, async t => {
 	const user = await User.create({
 		username: 'test',
 		password: '123456',
@@ -34,7 +34,7 @@ test(`GET ${selfEndpoint} should require valid auth token`, async t => {
 	)
 	const invalidScopeTokens = await Promise.all([
 		signJwt({ scopes: [] }, { subject: `${user.id}`, expiresIn: '10h' }),
-		signJwt({ scopes: 'invalid2' }, { subject: `${user.id}`, expiresIn: '10h' })
+		signJwt({ scopes: 'invalid' }, { subject: `${user.id}`, expiresIn: '10h' })
 	])
 	const invalidTokens = [null, 'invalid', expiredToken, ...invalidScopeTokens]
 

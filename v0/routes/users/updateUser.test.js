@@ -18,7 +18,7 @@ async function makeRequest(token, id, attrs) {
 	return req.send(attrs)
 }
 
-test(`PUT ${updateEndpoint} should require valid auth token`, async t => {
+test(`PUT ${updateEndpoint} should not accept auth token`, async t => {
 	const user = await User.create({
 		username: 'test',
 		password: '123456',
@@ -34,7 +34,7 @@ test(`PUT ${updateEndpoint} should require valid auth token`, async t => {
 	)
 	const invalidScopeTokens = await Promise.all([
 		signJwt({ scopes: [] }, { subject: `${user.id}`, expiresIn: '10h' }),
-		signJwt({ scopes: 'invalid2' }, { subject: `${user.id}`, expiresIn: '10h' })
+		signJwt({ scopes: 'invalid' }, { subject: `${user.id}`, expiresIn: '10h' })
 	])
 	const invalidTokens = [null, 'invalid', expiredToken, ...invalidScopeTokens]
 
@@ -190,5 +190,29 @@ test(`PUT ${updateEndpoint} should not update user to existing email`, async t =
 
 	t.is(status, BadRequestError.CODE, body.message)
 	t.is(body.code, BadRequestError.CODE)
+	t.truthy(body.message)
+})
+
+test(`POST ${updateEndpoint} should not update another user`, async t => {
+	const user = await User.create({
+		username: 'test',
+		password: '123456',
+		email: 'test@test.com',
+		emailConfirmed: false
+	})
+
+	const otherUser = await User.create({
+		username: 'test-other',
+		password: '123456',
+		email: 'test-other@test.com',
+		emailConfirmed: false
+	})
+
+	const attrs = { email: 'updated@test.com' }
+	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
+	const { status, body } = await makeRequest(token, otherUser.id, attrs)
+
+	t.is(status, UnauthorizedError.CODE, body.message)
+	t.is(body.code, UnauthorizedError.CODE)
 	t.truthy(body.message)
 })
