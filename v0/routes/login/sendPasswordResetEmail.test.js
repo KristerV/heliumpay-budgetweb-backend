@@ -6,7 +6,7 @@ const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { NotFoundError } = require('../../errors')
 
-const sendEndpoint = '/v0/users/sendPasswordResetEmail'
+const sendEndpoint = '/v0/login/sendPasswordResetEmail'
 
 async function makeRequest(attrs) {
 	const req = request(app).post(sendEndpoint)

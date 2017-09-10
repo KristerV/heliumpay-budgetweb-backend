@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
 			{ scope: scopes.userConfirmEmail },
 			{ subject: `${user.id}`, expiresIn: '5m' }
 		)
-		// TODO: send confirmation email
+		// TODO: send confirmation email with token
 	}
 
 	res.json(User.stripPrivateFields(user))
