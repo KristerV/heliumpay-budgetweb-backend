@@ -1,6 +1,7 @@
-const { signJwt } = require('../../utils')
 const { User } = require('../../../database/models')
+const { signJwt } = require('../../utils')
 const { BadRequestError, UnauthorizedError } = require('../../errors')
+const scopes = require('../../scopes')
 
 module.exports = async (req, res) => {
 	const { username, email, password } = req.body
@@ -14,7 +15,7 @@ module.exports = async (req, res) => {
 	const isValid = await User.comparePassword(user, password)
 	if (!isValid) throw new UnauthorizedError('invalid username or password')
 
-	const token = await signJwt({}, { subject: String(user.id), expiresIn: '10h' })
+	const token = await signJwt({ scope: scopes.user }, { subject: `${user.id}`, expiresIn: '10h' })
 
 	res.json({ token })
 }

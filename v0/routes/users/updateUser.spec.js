@@ -3,6 +3,7 @@ const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../../errors')
 const { signJwt } = require('../../utils')
+const scopes = require('../../scopes')
 
 const updateEndpoint = '/v0/users/:id'
 
@@ -16,16 +17,27 @@ module.exports = test => {
 	}
 
 	test(`PUT ${updateEndpoint} should require valid auth token`, async t => {
+		const user = await User.create({
+			username: 'test',
+			password: '123456',
+			email: 'test@test.com',
+			emailConfirmed: false
+		})
+
 		const expiredToken = await signJwt(
 			// backdate token 2 seconds
 			{ iat: Math.floor(Date.now() / 1000) - 2 },
 			// set token to expire in 1 second
 			{ expiresIn: '1s' }
 		)
-		const invalidTokens = [null, 'invalid', expiredToken]
+		const invalidScopeTokens = await Promise.all([
+			signJwt({ scopes: [] }, { subject: `${user.id}`, expiresIn: '10h' }),
+			signJwt({ scopes: 'invalid2' }, { subject: `${user.id}`, expiresIn: '10h' })
+		])
+		const invalidTokens = [null, 'invalid', expiredToken, ...invalidScopeTokens]
 
 		for (const token of invalidTokens) {
-			const { status, body } = await makeRequest(token)
+			const { status, body } = await makeRequest(token, user.id)
 
 			t.is(status, UnauthorizedError.CODE, body.message)
 			t.is(body.code, UnauthorizedError.CODE)
@@ -46,7 +58,7 @@ module.exports = test => {
 			{ password: 'updated2', email: 'updated@test.com' }
 		]
 
-		const token = await signJwt({}, { subject: String(user.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
 
 		for (const attrs of validAttrs) {
 			const { status, body } = await makeRequest(token, user.id, attrs)
@@ -80,7 +92,7 @@ module.exports = test => {
 		})
 
 		const attrs = { email: 'updated@test.com' }
-		const token = await signJwt({}, { subject: String(user.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
 		const { status, body } = await makeRequest(token, user.id, attrs)
 
 		t.is(status, 200, body.message)
@@ -104,7 +116,7 @@ module.exports = test => {
 			{ email: 'invalid' } // invalid email
 		]
 
-		const token = await signJwt({}, { subject: String(user.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
 
 		for (const attrs of invalidAttrs) {
 			const { status, body } = await makeRequest(token, user.id, attrs)
@@ -124,7 +136,7 @@ module.exports = test => {
 		})
 
 		const attrs = { email: 'test@test.com' }
-		const token = await signJwt({}, { subject: String(user.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
 		const { status, body } = await makeRequest(token, user.id, attrs)
 
 		t.is(status, 200, body.message)
@@ -151,7 +163,7 @@ module.exports = test => {
 		})
 
 		const attrs = { username: 'test1' }
-		const token = await signJwt({}, { subject: String(user2.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user2.id}` })
 		const { status, body } = await makeRequest(token, user2.id, attrs)
 
 		t.is(status, BadRequestError.CODE, body.message)
@@ -175,7 +187,7 @@ module.exports = test => {
 		})
 
 		const attrs = { email: 'test1@test.com' }
-		const token = await signJwt({}, { subject: String(user2.id) })
+		const token = await signJwt({ scopes: scopes.user }, { subject: `${user2.id}` })
 		const { status, body } = await makeRequest(token, user2.id, attrs)
 
 		t.is(status, BadRequestError.CODE, body.message)
