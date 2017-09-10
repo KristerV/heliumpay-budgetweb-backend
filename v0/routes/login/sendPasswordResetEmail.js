@@ -1,10 +1,11 @@
 const { User } = require('../../../database/models')
-const { NotFoundError } = require('../../errors')
+const { NotFoundError, BadRequestError } = require('../../errors')
 const { signJwt } = require('../../utils')
 const scopes = require('../../scopes')
 
 module.exports = async (req, res) => {
 	const { email } = req.body
+	if (!email) throw new BadRequestError('invalid email')
 
 	const user = await User.findOne({ email })
 	if (!user) throw new NotFoundError('user not found')

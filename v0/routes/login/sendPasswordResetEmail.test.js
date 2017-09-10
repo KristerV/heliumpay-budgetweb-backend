@@ -4,7 +4,7 @@ require('../../../setupTests.js')(test)
 
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
-const { NotFoundError } = require('../../errors')
+const { NotFoundError, BadRequestError } = require('../../errors')
 
 const sendEndpoint = '/v0/login/sendPasswordResetEmail'
 
@@ -27,6 +27,14 @@ test(`POST ${sendEndpoint} should send password reset email`, async t => {
 	t.is(body, true)
 
 	// TODO: verify email was sent using test mailer
+})
+
+test(`POST ${sendEndpoint} should not send password reset email for invalid attributes`, async t => {
+	const { status, body } = await makeRequest()
+
+	t.is(status, BadRequestError.CODE, body.message)
+	t.is(body.code, BadRequestError.CODE)
+	t.truthy(body.message)
 })
 
 test(`POST ${sendEndpoint} should not send password reset email for non-existent email`, async t => {
