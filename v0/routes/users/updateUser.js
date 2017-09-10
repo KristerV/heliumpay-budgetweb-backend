@@ -1,6 +1,7 @@
-const uuid = require('node-uuid')
 const { User } = require('../../../database/models')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../../errors')
+const { signJwt } = require('../../utils')
+const scopes = require('../../scopes')
 const { validateUpdateAttributes } = require('./validateAttributes')
 
 module.exports = async (req, res) => {
@@ -19,15 +20,17 @@ module.exports = async (req, res) => {
 
 	// if email is being updated, send new confirmation email
 	if (email && email !== user.email) {
-		emailConfirmationToken = uuid.v4()
 		emailConfirmed = false
+		const token = await signJwt(
+			{ scope: scopes.userConfirmEmail },
+			{ subject: `${user.id}`, expiresIn: '5m' }
+		)
 		// TODO: send confirmation email
 	}
 
 	const updatedUser = await User.update(user.id, {
 		email,
 		password,
-		emailConfirmationToken,
 		emailConfirmed
 	})
 

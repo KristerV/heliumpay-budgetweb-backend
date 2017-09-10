@@ -29,8 +29,6 @@ module.exports = test => {
 			t.is(body.email, attrs.email || null)
 			t.is(body.emailConfirmed, false)
 			// private fields, should never be returned by the endpoint
-			t.false('emailConfirmationToken' in body)
-			t.false('passwordResetToken' in body)
 			t.false('password' in body)
 			// verify password was hashed
 			const user = await User.findOne({ id: body.id })
@@ -45,8 +43,6 @@ module.exports = test => {
 
 		t.is(status, 200, body.message)
 		// verify email confirmation token was created
-		const user = await User.findOne({ id: body.id })
-		t.truthy(user.emailConfirmationToken)
 		// TODO: verify email was sent using test mailer
 	})
 
@@ -58,7 +54,7 @@ module.exports = test => {
 			{ password: '123456' }, // missing username
 			{ username: 'test', password: '12345' }, // invalid password
 			{ email: 'test@test.com', password: '123456' }, // missing username
-			{ username: 'test', email: 'invalid', password: '123456' } // invalid email
+			{ username: 'test', password: '123456', email: 'invalid' } // invalid email
 		]
 
 		for (const attrs of invalidAttrs) {
@@ -68,6 +64,22 @@ module.exports = test => {
 			t.is(body.code, BadRequestError.CODE)
 			t.truthy(body.message)
 		}
+	})
+
+	test(`POST ${createEndpoint} should not create with internal fields`, async t => {
+		const attrs = {
+			username: 'test',
+			password: '123456',
+			email: 'test@test.com',
+			emailConfirmationToken: 'token',
+			passwordResetToken: 'token'
+		}
+		const { status, body } = await makeRequest(attrs)
+
+		t.is(status, 200, body.message)
+		const user = await User.findOne({ id: body.id })
+		t.not(user.emailConfirmationToken, attrs.emailConfirmationToken)
+		t.not(user.passwordResetToken, attrs.passwordResetToken)
 	})
 
 	test(`POST ${createEndpoint} should not create user with existing username`, async t => {

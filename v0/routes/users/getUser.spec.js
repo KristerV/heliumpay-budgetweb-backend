@@ -65,9 +65,7 @@ module.exports = test => {
 		t.is(body.email, user.email)
 		t.is(body.emailConfirmed, false)
 		// private fields, should never be returned by the endpoint
-		t.false('emailConfirmationToken' in body)
 		t.false('password' in body)
-		t.false('passwordResetToken' in body)
 	})
 
 	test(`GET ${selfEndpoint} should not get profile of another user`, async t => {
