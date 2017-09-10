@@ -2,7 +2,6 @@ const request = require('supertest')
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { BadRequestError } = require('../../errors')
-const createUser = require('./createUser')
 
 const createEndpoint = '/v0/users'
 
@@ -30,7 +29,8 @@ module.exports = test => {
 			t.is(body.email, attrs.email || null)
 			t.is(body.emailConfirmed, false)
 			// private fields, should never be returned by the endpoint
-			t.false('emailConfirmationHash' in body)
+			t.false('emailConfirmationToken' in body)
+			t.false('passwordResetToken' in body)
 			t.false('password' in body)
 			// verify password was hashed
 			const user = await User.findOne({ id: body.id })
@@ -39,14 +39,26 @@ module.exports = test => {
 		}
 	})
 
+	test(`POST ${createEndpoint} should verify email`, async t => {
+		const attrs = { username: 'test2', password: '234567', email: 'test@test.com' }
+		const { status, body } = await makeRequest(attrs)
+
+		t.is(status, 200, body.message)
+		// verify email confirmation token was created
+		const user = await User.findOne({ id: body.id })
+		t.truthy(user.emailConfirmationToken)
+		// TODO: verify email was sent using test mailer
+	})
+
 	test(`POST ${createEndpoint} should not create user with invalid attributes`, async t => {
 		const invalidAttrs = [
 			null,
 			{},
-			{ username: 'test' },
-			{ password: '123456' },
-			{ username: 'test', password: '12345' },
-			{ email: 'test@test.com', password: '123456' }
+			{ username: 'test' }, // missing password
+			{ password: '123456' }, // missing username
+			{ username: 'test', password: '12345' }, // invalid password
+			{ email: 'test@test.com', password: '123456' }, // missing username
+			{ username: 'test', email: 'invalid', password: '123456' } // invalid email
 		]
 
 		for (const attrs of invalidAttrs) {

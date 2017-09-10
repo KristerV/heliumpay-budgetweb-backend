@@ -3,13 +3,12 @@ const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { UnauthorizedError, NotFoundError } = require('../../errors')
 const { signJwt } = require('../../utils')
-const getUser = require('./getUser')
 
-const selfEndpoint = '/v0/users/self'
+const selfEndpoint = '/v0/users/:id'
 
 module.exports = test => {
-	async function makeRequest(token) {
-		const req = request(app).get(selfEndpoint)
+	async function makeRequest(token, id) {
+		const req = request(app).get(selfEndpoint.replace(':id', id))
 		if (token) {
 			req.set('Authorization', `Bearer ${token}`)
 		}
@@ -43,7 +42,7 @@ module.exports = test => {
 		})
 
 		const token = await signJwt({}, { subject: String(user.id) })
-		const { status, body } = await makeRequest(token)
+		const { status, body } = await makeRequest(token, user.id)
 
 		t.is(status, 200, body.message)
 		t.truthy(body)
@@ -54,13 +53,30 @@ module.exports = test => {
 		t.is(body.email, user.email)
 		t.is(body.emailConfirmed, false)
 		// private fields, should never be returned by the endpoint
-		t.false('emailConfirmationHash' in body)
+		t.false('emailConfirmationToken' in body)
 		t.false('password' in body)
+		t.false('passwordResetToken' in body)
 	})
 
-	test(`GET ${selfEndpoint} should not get profile of non-existing user`, async t => {
-		const token = await signJwt({}, { subject: String(9999) })
-		const { status, body } = await makeRequest(token)
+	test(`GET ${selfEndpoint} should not get profile of another user`, async t => {
+		const user = await User.create({
+			username: 'test',
+			password: '123456',
+			email: 'test@test.com',
+			emailConfirmed: false
+		})
+
+		const token = await signJwt({}, { subject: '2' })
+		const { status, body } = await makeRequest(token, user.id)
+
+		t.is(status, UnauthorizedError.CODE, body.message)
+		t.is(body.code, UnauthorizedError.CODE)
+		t.truthy(body.message)
+	})
+
+	test(`GET ${selfEndpoint} should not get profile of non-existent user`, async t => {
+		const token = await signJwt({}, { subject: '9999' })
+		const { status, body } = await makeRequest(token, '9999')
 
 		t.is(status, NotFoundError.CODE, body.message)
 		t.is(body.code, NotFoundError.CODE)

@@ -12,8 +12,9 @@ module.exports.up = async () => {
 			.notNullable()
 		t.string('password').notNullable()
 		t.string('email').unique()
-		t.string('emailConfirmationHash')
+		t.string('emailConfirmationToken').unique()
 		t.boolean('emailConfirmed')
+		t.string('passwordResetToken').unique()
 	})
 }
 

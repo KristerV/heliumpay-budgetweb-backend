@@ -4,7 +4,7 @@ module.exports.getFullUrl = req => {
 	return req.protocol + '://' + req.get('host') + req.originalUrl.replace(/\/$/, '')
 }
 
-module.exports.getValidationErrors = async (schema, data) => {
+module.exports.validateSchema = async (schema, data) => {
 	try {
 		await schema.validate(data)
 	} catch (err) {

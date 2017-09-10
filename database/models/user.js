@@ -9,7 +9,7 @@ const { createTimestamps, updateTimestamps, withTransaction } = require('./utils
  */
 
 const table = 'users'
-const privateFields = ['password', 'emailConfirmationHash']
+const privateFields = ['password', 'emailConfirmationToken', 'passwordResetToken']
 
 /**
  * @typedef User
@@ -18,8 +18,9 @@ const privateFields = ['password', 'emailConfirmationHash']
  * @property {string} username - the user's username
  * @property {string} password - the user's password (will be automatically hashed)
  * @property {string} email - the user's email
- * @property {string} emailConfirmationHash - the hash of the confirmation email
+ * @property {string} emailConfirmationToken - the token of the confirmation email
  * @property {string} emailConfirmed - whether or not the user's email address has been confirmed
+ * @property {string} passwordResetToken - the token of the password reset email
  * @property {string} createdAt - the date the user was created
  * @property {string} updatedAt - the date the user was last updated
  */
@@ -30,8 +31,9 @@ const privateFields = ['password', 'emailConfirmationHash']
  * @property {string} username
  * @property {string} password
  * @property {string} email
- * @property {string} emailConfirmationHash
+ * @property {string} emailConfirmationToken
  * @property {string} emailConfirmed
+ * @property {string} passwordResetToken - the token of the password reset email
  */
 
 /**
@@ -42,7 +44,9 @@ const privateFields = ['password', 'emailConfirmationHash']
  */
 module.exports.create = async (attrs, trx) => {
 	const db = await getDbDriver()
+
 	attrs.password = await bcrypt.hash(attrs.password, 10)
+
 	const [user] = await withTransaction(trx, db(table).insert(createTimestamps(attrs), '*'))
 
 	return user
@@ -57,9 +61,11 @@ module.exports.create = async (attrs, trx) => {
  */
 module.exports.update = async (id, attrs, trx) => {
 	const db = await getDbDriver()
+
 	if (attrs.password) {
 		attrs.password = await bcrypt.hash(attrs.password, 10)
 	}
+
 	const [user] = await withTransaction(
 		trx,
 		db(table)
