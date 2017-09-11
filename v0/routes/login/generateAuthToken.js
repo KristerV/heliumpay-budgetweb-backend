@@ -15,7 +15,10 @@ module.exports = async (req, res) => {
 	const isValid = await User.comparePassword(user, password)
 	if (!isValid) throw new UnauthorizedError('invalid username or password')
 
-	const token = await signJwt({ scope: scopes.user }, { subject: `${user.id}`, expiresIn: '10h' })
+	const token = await signJwt(
+		{ scopes: scopes.user },
+		{ subject: `${user.id}`, expiresIn: '10h' }
+	)
 
 	res.json({ token })
 }

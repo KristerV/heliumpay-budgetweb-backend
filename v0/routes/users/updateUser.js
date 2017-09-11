@@ -15,7 +15,6 @@ module.exports = async (req, res) => {
 
 	await validateUpdateAttributes({ username, email, password }, user)
 
-	let emailConfirmationToken
 	let emailConfirmed
 
 	// if email is being updated, send new confirmation email
