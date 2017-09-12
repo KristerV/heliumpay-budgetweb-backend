@@ -11,6 +11,7 @@ module.exports = async () => {
 	const oldBlockHash = await runcli(['getblockhash', oldBlockHeight])
 	const oldBlock = await runcli(['getblock', oldBlockHash])
 	const budgetTotal = await runcli(['getsuperblockbudget', govinfo.nextsuperblock])
+	const masternodeCount = await runcli(['masternode', 'count', 'enabled'])
 
 	const blocktimeSec = (latestBlock.time - oldBlock.time) / govinfo.superblockcycle
 	const paymentDelay = (govinfo.nextsuperblock - latestBlock.height) * blocktimeSec
@@ -27,6 +28,7 @@ module.exports = async () => {
 		voteDeadlineDelay,
 		voteDeadlineDate,
 		superblockHeight,
+		masternodeCount,
 		budgetTotal
 	}
 }
