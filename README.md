@@ -24,7 +24,7 @@ This will start the app along with `dashd`. Also run [the frontend](https://gith
 A stage is basically a bunch of features. Starting with the most critical and moving down to nice to have stuff. The front-end will be developed at the same time as backend, but no extra prettyness will be added until main features are implemented (unless we find a front-end dev). The website ideally will be public throughout all of the developemnt.
 
 - [x] **Stage 0** - Figure out theoretical stuff (this README)
-- [ ] **Stage 1** - GET all info
+- [x] **Stage 1** - GET all info
 	- [x] Proposals list
 		- [x] Current Budget information
 		- [x] List all proposals [new, paid, completed, failed]
@@ -35,9 +35,9 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 	- [x] Other
 		- [x] SSL support
 		- [x] Make systemd manage git and npm on restart
-- [ ] **Stage 2** - Participate with generated commands
+- [x] **Stage 2** - Participate with generated commands
 	- [x] Vote for proposal
-	- [ ] Submit new proposal
+	- [x] Submit new proposal
 - [ ] **Stage 3** - User based actions
 	- [ ] User management
 		- [ ] Register, Login, Edit profile
@@ -52,7 +52,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 		- [ ] Description
 		- [ ] Commenting
 		- [ ] Unseen comments are visible
-- [ ] **Stage 4** - Prettify frontend
+- [x] **Stage 4** - Prettify frontend
 - [ ] **Stage 5** - Informational pages
 	- [ ] Front page
 	- [ ] Getting started with Helium
@@ -74,6 +74,7 @@ A stage is basically a bunch of features. Starting with the most critical and mo
 	- Analytics (privacy respecting possibly custom solution)
 		- Important for scheduled maintenance
 	- Rating system like https://www.dashtreasury.org
+	- Optimize API bandwidth
 
 # Questions still unanswered
 
