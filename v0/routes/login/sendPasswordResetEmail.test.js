@@ -1,5 +1,6 @@
 const test = require('ava')
 const request = require('supertest')
+const sinon = require('sinon')
 require('../../../setupTests.js')(test)
 
 const app = require('../../../index.js')
@@ -17,16 +18,17 @@ test(`POST ${sendEndpoint} should send password reset email`, async t => {
 	const user = await User.create({
 		username: 'test',
 		password: '123456',
-		email: 'test@test.com',
+		email: 'test@jschr.io',
 		emailConfirmed: false
 	})
 
-	const { status, body } = await makeRequest({ email: 'test@test.com' })
+	const sendPasswordReset = sinon.spy(t.context.mailer, 'sendPasswordReset')
+	const { status, body } = await makeRequest({ email: user.email })
 
 	t.is(status, 200, body.message)
 	t.is(body, true)
-
-	// TODO: verify email was sent using test mailer
+	// verify email was sent using test mailer
+	t.truthy(sendPasswordReset.called)
 })
 
 test(`POST ${sendEndpoint} should not send password reset email for invalid attributes`, async t => {

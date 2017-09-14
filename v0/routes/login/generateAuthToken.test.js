@@ -6,6 +6,7 @@ const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { BadRequestError, UnauthorizedError } = require('../../errors')
 const { verifyJwt } = require('../../utils')
+const scopes = require('../../scopes')
 const generateAuthToken = require('./generateAuthToken')
 
 const loginEndpoint = '/v0/login'
@@ -36,6 +37,7 @@ test(`POST ${loginEndpoint} should generate an auth token`, async t => {
 		// verify jwt
 		const decoded = await verifyJwt(body.token)
 		t.is(decoded.sub, String(user.id))
+		t.is(decoded.scopes, scopes.user)
 		t.truthy(decoded.iat)
 		t.truthy(decoded.exp)
 	}

@@ -1,3 +1,4 @@
+const mailer = require('../../../mailer')
 const { User } = require('../../../database/models')
 const { NotFoundError, BadRequestError } = require('../../errors')
 const { signJwt } = require('../../utils')
@@ -11,10 +12,12 @@ module.exports = async (req, res) => {
 	if (!user) throw new NotFoundError('user not found')
 
 	const token = await signJwt(
-		{ scope: scopes.userResetPassword },
+		{ scopes: scopes.userResetPassword },
 		{ subject: `${user.id}`, expiresIn: '5m' }
 	)
-	// TODO: send reset email
+	// TODO: api domain env var
+	const resetLink = `${process.env.FRONTEND_URL}/users/${user.id}/resetPassword?token=${token}`
+	await mailer.sendPasswordReset(user.email, user.id, token)
 
 	res.json(true)
 }

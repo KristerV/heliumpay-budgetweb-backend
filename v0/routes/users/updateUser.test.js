@@ -1,5 +1,6 @@
 const test = require('ava')
 const request = require('supertest')
+const sinon = require('sinon')
 require('../../../setupTests.js')(test)
 
 const app = require('../../../index.js')
@@ -70,11 +71,11 @@ test(`PUT ${updateEndpoint} should send confirmation for changed email`, async t
 
 	const attrs = { email: 'updated@test.com' }
 	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
+	const sendEmailConfirmation = sinon.spy(t.context.mailer, 'sendEmailConfirmation')
 	const { status, body } = await makeRequest(token, user.id, attrs)
 
 	t.is(status, 200, body.message)
-	// verify email confirmation token was created
-	// TODO: verify email was sent using test mailer
+	t.truthy(sendEmailConfirmation.called)
 })
 
 test(`PUT ${updateEndpoint} should not update user with invalid attributes`, async t => {

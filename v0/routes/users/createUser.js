@@ -1,4 +1,5 @@
 const { User } = require('../../../database/models')
+const mailer = require('../../../mailer')
 const { BadRequestError } = require('../../errors')
 const { signJwt } = require('../../utils')
 const scopes = require('../../scopes')
@@ -18,10 +19,11 @@ module.exports = async (req, res) => {
 
 	if (email) {
 		const token = await signJwt(
-			{ scope: scopes.userConfirmEmail },
+			{ scopes: scopes.userConfirmEmail },
 			{ subject: `${user.id}`, expiresIn: '5m' }
 		)
-		// TODO: send confirmation email with token
+		// TODO: api domain env var
+		await mailer.sendEmailConfirmation(user.email, user.id, token)
 	}
 
 	res.json(User.stripPrivateFields(user))

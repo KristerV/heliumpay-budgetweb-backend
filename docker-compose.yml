@@ -13,8 +13,10 @@ services:
     # by bridging the network using the service name
     env_file: .env
     environment:
-      - DB_HOST=db
-
+      - DB_HOST=db # override for docker-compose internal network
+      - MAILGUN_API_KEY # secret, set manually with $ export MAILGUN_API_KEY=[api-key]
+      - MAILGUN_DOMAIN # secret, set manually with $ export MAILGUN_DOMAIN=[domain]
+ 
   db:
     image: postgres
     ports:

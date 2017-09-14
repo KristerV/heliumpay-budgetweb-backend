@@ -1,4 +1,5 @@
 const { User } = require('../../../database/models')
+const mailer = require('../../../mailer')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../../errors')
 const { signJwt } = require('../../utils')
 const scopes = require('../../scopes')
@@ -21,10 +22,10 @@ module.exports = async (req, res) => {
 	if (email && email !== user.email) {
 		emailConfirmed = false
 		const token = await signJwt(
-			{ scope: scopes.userConfirmEmail },
+			{ scopes: scopes.userConfirmEmail },
 			{ subject: `${user.id}`, expiresIn: '5m' }
 		)
-		// TODO: send confirmation email
+		await mailer.sendEmailConfirmation(user.email, user.id, token)
 	}
 
 	const updatedUser = await User.update(user.id, {

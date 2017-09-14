@@ -1,5 +1,6 @@
 const test = require('ava')
 const request = require('supertest')
+const sinon = require('sinon')
 require('../../../setupTests.js')(test)
 
 const app = require('../../../index.js')
@@ -41,11 +42,11 @@ test(`POST ${createEndpoint} should create user`, async t => {
 
 test(`POST ${createEndpoint} should verify email`, async t => {
 	const attrs = { username: 'test2', password: '234567', email: 'test@test.com' }
+	const sendEmailConfirmation = sinon.spy(t.context.mailer, 'sendEmailConfirmation')
 	const { status, body } = await makeRequest(attrs)
 
 	t.is(status, 200, body.message)
-	// verify email confirmation token was created
-	// TODO: verify email was sent using test mailer
+	t.truthy(sendEmailConfirmation.called)
 })
 
 test(`POST ${createEndpoint} should not create user with invalid attributes`, async t => {
