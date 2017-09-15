@@ -5,7 +5,7 @@ require('../../../setupTests.js')(test)
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { UnauthorizedError, NotFoundError } = require('../../errors')
-const { signJwt } = require('../../utils')
+const { signJwt, decodeId, encodeId } = require('../../utils')
 const scopes = require('../../scopes')
 const { shouldNotAcceptInvalidToken } = require('./testUtils')
 
@@ -32,12 +32,12 @@ test(`GET ${selfEndpoint} should get profile of authenticated user`, async t => 
 		emailConfirmed: false
 	})
 
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
-	const { status, body } = await makeRequest(token, user.id)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
+	const { status, body } = await makeRequest(token, encodeId(user.id))
 
 	t.is(status, 200, body.message)
 	t.truthy(body)
-	t.true(typeof body.id === 'number')
+	t.is(decodeId(body.id), user.id)
 	t.truthy(new Date(body.createdAt))
 	t.is(body.createdAt, body.updatedAt)
 	t.is(body.username, user.username)
@@ -55,8 +55,8 @@ test(`GET ${selfEndpoint} should not get profile of another user`, async t => {
 		emailConfirmed: false
 	})
 
-	const token = await signJwt({ scopes: scopes.user }, { subject: '2' })
-	const { status, body } = await makeRequest(token, user.id)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(2) })
+	const { status, body } = await makeRequest(token, encodeId(user.id))
 
 	t.is(status, UnauthorizedError.CODE, body.message)
 	t.is(body.code, UnauthorizedError.CODE)
@@ -64,8 +64,8 @@ test(`GET ${selfEndpoint} should not get profile of another user`, async t => {
 })
 
 test(`GET ${selfEndpoint} should not get profile of non-existent user`, async t => {
-	const token = await signJwt({ scopes: scopes.user }, { subject: '9999' })
-	const { status, body } = await makeRequest(token, '9999')
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(9999) })
+	const { status, body } = await makeRequest(token, encodeId(9999))
 
 	t.is(status, NotFoundError.CODE, body.message)
 	t.is(body.code, NotFoundError.CODE)

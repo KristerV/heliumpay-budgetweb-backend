@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken')
+const Hashids = require('hashids')
+
+const hashids = new Hashids(process.env.HASHID_SALT, 6)
 
 module.exports.getFullUrl = req => {
 	return req.protocol + '://' + req.get('host') + req.originalUrl.replace(/\/$/, '')
@@ -38,4 +41,13 @@ module.exports.verifyJwt = token => {
 			resolve(decoded)
 		})
 	})
+}
+
+module.exports.encodeId = id => {
+	return hashids.encode(id)
+}
+
+module.exports.decodeId = id => {
+	// hashids always returns and array in case multiple were encoded
+	return hashids.decode(id)[0]
 }

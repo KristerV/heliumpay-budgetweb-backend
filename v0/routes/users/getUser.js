@@ -10,5 +10,5 @@ module.exports = async (req, res) => {
 	const user = await User.findOne({ id: req.token.sub })
 	if (!user) throw new NotFoundError('user not found')
 
-	res.json(User.stripPrivateFields(user))
+	res.json(User.toJSON(user))
 }

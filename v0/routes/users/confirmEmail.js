@@ -1,5 +1,5 @@
 const { User } = require('../../../database/models')
-const { NotFoundError } = require('../../errors')
+const { NotFoundError, UnauthorizedError } = require('../../errors')
 
 module.exports = async (req, res) => {
 	const { id } = req.params
@@ -11,5 +11,5 @@ module.exports = async (req, res) => {
 
 	const updatedUser = await User.update(user.id, { emailConfirmed: true })
 
-	res.json(User.stripPrivateFields(updatedUser))
+	res.json(User.toJSON(updatedUser))
 }

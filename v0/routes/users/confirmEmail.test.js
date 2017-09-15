@@ -5,7 +5,7 @@ require('../../../setupTests.js')(test)
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { NotFoundError, UnauthorizedError } = require('../../errors')
-const { signJwt } = require('../../utils')
+const { signJwt, decodeId, encodeId } = require('../../utils')
 const scopes = require('../../scopes')
 const { shouldNotAcceptInvalidToken } = require('./testUtils')
 
@@ -32,12 +32,12 @@ test(`POST ${confirmEmailEndpoint} should update confirmed email for user`, asyn
 		emailConfirmed: false
 	})
 
-	const token = await signJwt({ scopes: scopes.userConfirmEmail }, { subject: `${user.id}` })
-	const { status, body } = await makeRequest(token, user.id)
+	const token = await signJwt({ scopes: scopes.userConfirmEmail }, { subject: encodeId(user.id) })
+	const { status, body } = await makeRequest(token, encodeId(user.id))
 
 	t.is(status, 200, body.message)
 	t.truthy(body)
-	t.true(typeof body.id === 'number')
+	t.is(decodeId(body.id), user.id)
 	t.truthy(new Date(body.updatedAt) > new Date(body.createdAt))
 	t.is(body.emailConfirmed, true)
 })
@@ -57,8 +57,8 @@ test(`POST ${confirmEmailEndpoint} should not confirm email for another user`, a
 		emailConfirmed: false
 	})
 
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
-	const { status, body } = await makeRequest(token, otherUser.id)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
+	const { status, body } = await makeRequest(token, encodeId(otherUser.id))
 
 	t.is(status, UnauthorizedError.CODE, body.message)
 	t.is(body.code, UnauthorizedError.CODE)

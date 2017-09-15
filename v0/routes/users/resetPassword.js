@@ -12,5 +12,5 @@ module.exports = async (req, res) => {
 
 	const updatedUser = await User.update(user.id, { password })
 
-	res.json(User.stripPrivateFields(updatedUser))
+	res.json(User.toJSON(updatedUser))
 }

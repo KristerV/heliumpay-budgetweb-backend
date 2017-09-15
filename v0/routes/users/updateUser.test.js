@@ -6,7 +6,7 @@ require('../../../setupTests.js')(test)
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../../errors')
-const { signJwt } = require('../../utils')
+const { signJwt, encodeId, decodeId } = require('../../utils')
 const scopes = require('../../scopes')
 const { shouldNotAcceptInvalidToken } = require('./testUtils')
 
@@ -38,14 +38,14 @@ test(`PUT ${updateEndpoint} should update user`, async t => {
 		{ password: 'updated2', email: 'updated@test.com' }
 	]
 
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
 
 	for (const attrs of validAttrs) {
-		const { status, body } = await makeRequest(token, user.id, attrs)
+		const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
 
 		t.is(status, 200, body.message)
 		t.truthy(body)
-		t.true(typeof body.id === 'number')
+		t.is(decodeId(body.id), user.id)
 		t.truthy(new Date(body.createdAt))
 		t.truthy(new Date(body.updatedAt) > new Date(body.createdAt))
 		// cannot update username
@@ -55,7 +55,7 @@ test(`PUT ${updateEndpoint} should update user`, async t => {
 		// private fields, should never be returned by the endpoint
 		t.false('password' in body)
 		// verify password was hashed
-		const updatedUser = await User.findOne({ id: body.id })
+		const updatedUser = await User.findOne({ id: decodeId(body.id) })
 		const matches = await User.comparePassword(updatedUser, attrs.password)
 		t.truthy(matches)
 	}
@@ -70,12 +70,13 @@ test(`PUT ${updateEndpoint} should send confirmation for changed email`, async t
 	})
 
 	const attrs = { email: 'updated@test.com' }
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
 	const sendEmailConfirmation = sinon.spy(t.context.mailer, 'sendEmailConfirmation')
-	const { status, body } = await makeRequest(token, user.id, attrs)
+	const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
 
 	t.is(status, 200, body.message)
 	t.truthy(sendEmailConfirmation.called)
+	// TODO: verify email link and token
 })
 
 test(`PUT ${updateEndpoint} should not update user with invalid attributes`, async t => {
@@ -92,10 +93,10 @@ test(`PUT ${updateEndpoint} should not update user with invalid attributes`, asy
 		{ email: 'invalid' } // invalid email
 	]
 
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
 
 	for (const attrs of invalidAttrs) {
-		const { status, body } = await makeRequest(token, user.id, attrs)
+		const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
 
 		t.is(status, BadRequestError.CODE, JSON.stringify(attrs))
 		t.is(body.code, BadRequestError.CODE)
@@ -112,11 +113,11 @@ test(`PUT ${updateEndpoint} should not send confirmation for unchanged email`, a
 	})
 
 	const attrs = { email: 'test@test.com' }
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
-	const { status, body } = await makeRequest(token, user.id, attrs)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
+	const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
 
 	t.is(status, 200, body.message)
-	const updatedUser = await User.findOne({ id: body.id })
+	const updatedUser = await User.findOne({ id: decodeId(body.id) })
 	t.falsy(updatedUser.emailConfirmationToken)
 })
 
@@ -139,8 +140,8 @@ test(`PUT ${updateEndpoint} should not update user to existing username`, async 
 	})
 
 	const attrs = { username: 'test1' }
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user2.id}` })
-	const { status, body } = await makeRequest(token, user2.id, attrs)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user2.id) })
+	const { status, body } = await makeRequest(token, encodeId(user2.id), attrs)
 
 	t.is(status, BadRequestError.CODE, body.message)
 	t.is(body.code, BadRequestError.CODE)
@@ -163,8 +164,8 @@ test(`PUT ${updateEndpoint} should not update user to existing email`, async t =
 	})
 
 	const attrs = { email: 'test1@test.com' }
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user2.id}` })
-	const { status, body } = await makeRequest(token, user2.id, attrs)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user2.id) })
+	const { status, body } = await makeRequest(token, encodeId(user2.id), attrs)
 
 	t.is(status, BadRequestError.CODE, body.message)
 	t.is(body.code, BadRequestError.CODE)
@@ -187,8 +188,8 @@ test(`PUT ${updateEndpoint} should not update another user`, async t => {
 	})
 
 	const attrs = { email: 'updated@test.com' }
-	const token = await signJwt({ scopes: scopes.user }, { subject: `${user.id}` })
-	const { status, body } = await makeRequest(token, otherUser.id, attrs)
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(user.id) })
+	const { status, body } = await makeRequest(token, encodeId(otherUser.id), attrs)
 
 	t.is(status, UnauthorizedError.CODE, body.message)
 	t.is(body.code, UnauthorizedError.CODE)
@@ -196,8 +197,8 @@ test(`PUT ${updateEndpoint} should not update another user`, async t => {
 })
 
 test(`PUT ${updateEndpoint} should not update non-existent user`, async t => {
-	const token = await signJwt({ scopes: scopes.user }, { subject: '9999' })
-	const { status, body } = await makeRequest(token, '9999')
+	const token = await signJwt({ scopes: scopes.user }, { subject: encodeId(9999) })
+	const { status, body } = await makeRequest(token, encodeId(9999))
 
 	t.is(status, NotFoundError.CODE, body.message)
 	t.is(body.code, NotFoundError.CODE)
