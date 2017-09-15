@@ -27,7 +27,7 @@ test(
 test(`GET ${selfEndpoint} should get profile of authenticated user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -50,7 +50,7 @@ test(`GET ${selfEndpoint} should get profile of authenticated user`, async t => 
 test(`GET ${selfEndpoint} should not get profile of another user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})

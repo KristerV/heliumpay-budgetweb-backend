@@ -16,8 +16,8 @@ async function makeRequest(attrs) {
 
 test(`POST ${createEndpoint} should create user`, async t => {
 	const validAttrs = [
-		{ username: 'test1', password: '123456' },
-		{ username: 'test2', password: '234567', email: 'test@test.com' }
+		{ username: 'test1', password: '123456123456' },
+		{ username: 'test2', password: '123456123456', email: 'test@test.com' }
 	]
 
 	for (const attrs of validAttrs) {
@@ -41,7 +41,7 @@ test(`POST ${createEndpoint} should create user`, async t => {
 })
 
 test(`POST ${createEndpoint} should verify email`, async t => {
-	const attrs = { username: 'test2', password: '234567', email: 'test@test.com' }
+	const attrs = { username: 'test2', password: '123456123456', email: 'test@test.com' }
 	const sendEmailConfirmation = sinon.spy(t.context.mailer, 'sendEmailConfirmation')
 	const { status, body } = await makeRequest(attrs)
 
@@ -55,8 +55,10 @@ test(`POST ${createEndpoint} should not create user with invalid attributes`, as
 		{},
 		{ username: 'test' }, // missing password
 		{ password: '123456' }, // missing username
-		{ username: 'test', password: '12345' }, // invalid password
-		{ email: 'test@test.com', password: '123456' }, // missing username
+		{ username: 't', password: '123456123456' }, // invalid username
+		{ username: '1ab', password: '123456123456' }, // invalid username
+		{ username: 'ab&', password: '123456123456' }, // invalid username
+		{ username: 'test', password: '12345612345' }, // invalid password
 		{ username: 'test', password: '123456', email: 'invalid' } // invalid email
 	]
 
@@ -72,7 +74,7 @@ test(`POST ${createEndpoint} should not create user with invalid attributes`, as
 test(`POST ${createEndpoint} should not create with internal fields`, async t => {
 	const attrs = {
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmationToken: 'token',
 		passwordResetToken: 'token'
@@ -86,9 +88,9 @@ test(`POST ${createEndpoint} should not create with internal fields`, async t =>
 })
 
 test(`POST ${createEndpoint} should not create user with existing username`, async t => {
-	await User.create({ username: 'test', password: '123456' })
+	await User.create({ username: 'test', password: '123456123456' })
 
-	const attrs = { username: 'test', password: '123456' }
+	const attrs = { username: 'test', password: '123456123456' }
 	const { status, body } = await makeRequest(attrs)
 
 	t.is(status, BadRequestError.CODE, body.message)
@@ -97,9 +99,9 @@ test(`POST ${createEndpoint} should not create user with existing username`, asy
 })
 
 test(`POST ${createEndpoint} should not create user with existing email`, async t => {
-	await User.create({ username: 'test1', password: '123456', email: 'test@test.com' })
+	await User.create({ username: 'test1', password: '123456123456', email: 'test@test.com' })
 
-	const attrs = { username: 'test2', password: '123456', email: 'test@test.com' }
+	const attrs = { username: 'test2', password: '123456123456', email: 'test@test.com' }
 	const { status, body } = await makeRequest(attrs)
 
 	t.is(status, BadRequestError.CODE, body.message)

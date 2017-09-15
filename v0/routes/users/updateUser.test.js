@@ -28,7 +28,7 @@ test(
 test(`PUT ${updateEndpoint} should update user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -64,7 +64,7 @@ test(`PUT ${updateEndpoint} should update user`, async t => {
 test(`PUT ${updateEndpoint} should send confirmation for changed email`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -81,7 +81,7 @@ test(`PUT ${updateEndpoint} should send confirmation for changed email`, async t
 test(`PUT ${updateEndpoint} should not update user with invalid attributes`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -106,7 +106,7 @@ test(`PUT ${updateEndpoint} should not update user with invalid attributes`, asy
 test(`PUT ${updateEndpoint} should not send confirmation for unchanged email`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -126,14 +126,14 @@ test(`PUT ${updateEndpoint} should not update user to existing username`, async 
 	// to allow users to update their username in the future
 	const user1 = await User.create({
 		username: 'test1',
-		password: '123456',
+		password: '123456123456',
 		email: 'test1@test.com',
 		emailConfirmed: false
 	})
 
 	const user2 = await User.create({
 		username: 'test2',
-		password: '123456',
+		password: '123456123456',
 		email: 'test2@test.com',
 		emailConfirmed: false
 	})
@@ -150,14 +150,14 @@ test(`PUT ${updateEndpoint} should not update user to existing username`, async 
 test(`PUT ${updateEndpoint} should not update user to existing email`, async t => {
 	const user1 = await User.create({
 		username: 'test1',
-		password: '123456',
+		password: '123456123456',
 		email: 'test1@test.com',
 		emailConfirmed: false
 	})
 
 	const user2 = await User.create({
 		username: 'test2',
-		password: '123456',
+		password: '123456123456',
 		email: 'test2@test.com',
 		emailConfirmed: false
 	})
@@ -174,14 +174,14 @@ test(`PUT ${updateEndpoint} should not update user to existing email`, async t =
 test(`PUT ${updateEndpoint} should not update another user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
 
 	const otherUser = await User.create({
-		username: 'test-other',
-		password: '123456',
+		username: 'testother',
+		password: '123456123456',
 		email: 'test-other@test.com',
 		emailConfirmed: false
 	})

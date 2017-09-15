@@ -2,8 +2,6 @@ const { UnauthorizedError } = require('../errors')
 const { verifyJwt } = require('../utils')
 const scopes = require('../scopes')
 
-// TODO: add docs for auth and scopes in README
-
 module.exports = function createAuthMiddleware(allowedScopes) {
 	if (typeof allowedScopes === 'string') {
 		allowedScopes = [allowedScopes]

@@ -27,7 +27,7 @@ test(
 test(`POST ${resetPasswordEndpoint} should reset password for user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
@@ -55,14 +55,14 @@ test(`POST ${resetPasswordEndpoint} should reset password for user`, async t => 
 test(`POST ${resetPasswordEndpoint} should reset password for another user`, async t => {
 	const user = await User.create({
 		username: 'test',
-		password: '123456',
+		password: '123456123456',
 		email: 'test@test.com',
 		emailConfirmed: false
 	})
 
 	const otherUser = await User.create({
-		username: 'test-other',
-		password: '123456',
+		username: 'testother',
+		password: '123456123456',
 		email: 'test-other@test.com',
 		emailConfirmed: false
 	})

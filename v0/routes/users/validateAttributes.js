@@ -4,14 +4,17 @@ const { validateSchema } = require('../../utils')
 const { BadRequestError } = require('../../errors')
 
 const createInputSchema = yup.object().shape({
+	// at least 3 chars, alpha numberic starting with a char, including underscores
 	username: yup
 		.string()
 		.required()
+		.matches(/^[A-Za-z_][A-Za-z\d_]*$/)
 		.min(3),
+	// as least 12 chars
 	password: yup
 		.string()
 		.required()
-		.min(6),
+		.min(12),
 	email: yup.string().email()
 })
 
