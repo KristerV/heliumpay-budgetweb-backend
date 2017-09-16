@@ -25,9 +25,8 @@ module.exports = function createHashIdMiddleware() {
 		res.json = body => {
 			if (Array.isArray(body) && isObjectWithId(body[0])) {
 				// body is a collection of objects with ids, send a new array with encoded ids
-				body = body.map(value => {
+				body.forEach(value => {
 					value.id = encodeId(value.id)
-					return value
 				})
 			} else if (isObjectWithId(body)) {
 				body.id = encodeId(body.id)
