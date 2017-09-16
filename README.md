@@ -21,6 +21,14 @@ A Budget Proposal system for Helium Payments.
 
 This will start the app along with `dashd`. Also run [the frontend](https://github.com/KristerV/heliumpay-budgetweb-frontend).
 
+### Mailer
+
+To enable the mailer, `process.env.MAILGUN_API_KEY` and `process.env.MAILGUN_DOMAIN` must be set:
+
+```bash
+export MAILGUN_API_KEY=[api-key] && export MAILGUN_DOMAIN=[domain] && docker-compose up
+```
+
 ### Tests
 Run the test suite:
 ```
