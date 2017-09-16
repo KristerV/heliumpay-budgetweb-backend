@@ -89,7 +89,7 @@ test(`PUT ${updateEndpoint} should not update user with invalid attributes`, asy
 
 	const invalidAttrs = [
 		{ username: 'updated' }, // should not update username
-		{ password: '12345' }, // invalid password
+		{ password: '12345612345' }, // invalid password
 		{ email: 'invalid' } // invalid email
 	]
 

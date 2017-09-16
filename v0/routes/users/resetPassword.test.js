@@ -4,7 +4,7 @@ require('../../../setupTests.js')(test)
 
 const app = require('../../../index.js')
 const { User } = require('../../../database/models')
-const { NotFoundError, UnauthorizedError } = require('../../errors')
+const { NotFoundError, UnauthorizedError, BadRequestError } = require('../../errors')
 const { signJwt, encodeId, decodeId } = require('../../utils')
 const scopes = require('../../scopes')
 const { shouldNotAcceptInvalidToken } = require('./testUtils')
@@ -36,7 +36,7 @@ test(`POST ${resetPasswordEndpoint} should reset password for user`, async t => 
 		{ scopes: scopes.userResetPassword },
 		{ subject: encodeId(user.id) }
 	)
-	const attrs = { password: 'updated' }
+	const attrs = { password: '234567234567' }
 	const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
 
 	t.is(status, 200, body.message)
@@ -53,6 +53,26 @@ test(`POST ${resetPasswordEndpoint} should reset password for user`, async t => 
 	const updatedUser = await User.findOne({ id: decodeId(body.id) })
 	const matches = await User.comparePassword(updatedUser, attrs.password)
 	t.truthy(matches)
+})
+
+test(`POST ${resetPasswordEndpoint} should not reset to invalid password`, async t => {
+	const user = await User.create({
+		username: 'test',
+		password: '123456123456',
+		email: 'test@test.com',
+		emailConfirmed: false
+	})
+
+	const token = await signJwt(
+		{ scopes: scopes.userResetPassword },
+		{ subject: encodeId(user.id) }
+	)
+	const attrs = { password: '12345612345' }
+	const { status, body } = await makeRequest(token, encodeId(user.id), attrs)
+
+	t.is(status, BadRequestError.CODE, JSON.stringify(attrs))
+	t.is(body.code, BadRequestError.CODE)
+	t.truthy(body.message)
 })
 
 test(`POST ${resetPasswordEndpoint} should reset password for another user`, async t => {
