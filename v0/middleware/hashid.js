@@ -2,6 +2,11 @@ const { encodeId, decodeId } = require('../utils')
 
 const isObjectWithId = value => value && typeof value === 'object' && 'id' in value
 
+// TODO: allow additional properties to be passed in for encoding / decoding
+//   ie. app.get('/', hashid(['userId', ...]), handler)
+// 		- checks req.body, req.query and req.params for additional properties to decode
+// 		- checks res.body for additional properties to encode
+
 module.exports = function createHashIdMiddleware() {
 	return function hashIdMiddleware(req, res, next) {
 		// decode id in request parameters
