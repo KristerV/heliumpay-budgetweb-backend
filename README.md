@@ -35,18 +35,35 @@ Tests are run against a separate test database. Make sure you run `docker-compos
 ## API design
 
 ```
-v0                           // Alpha version, subject to constant change
-GET v0/core/proposals        // all proposals
-GET v0/core/proposals/:hash  // single proposal
-GET v0/core/raw-cli/*        // Raw data from the cli
+v0                                      // Alpha version, subject to constant change
+GET   v0/core/proposals                 // All proposals
+GET   v0/core/proposals/:hash           // Single proposal
+GET   v0/core/raw-cli/*                 // Raw data from the cli
+POST  v0/login                          // Login with username (or email) and password
+POST  v0/login/sendPasswordResetEmail   // Trigger password reset workflow for provided email
+POST  v0/users                          // Create a new user
+GET   v0/users/:id                      // Fetch a user by id
+PUT   v0/users/:id                      // Updates a user by id
+POST  v0/users/:id/confirmEmail         // Confirms the users email with short-lived token
+POST  v0/users/:id/resetPassword        // Updates the users password with short-lived token
 ```
 
 ### Middleware
+Middleware adds common behaviour to routes handlers.
 
-### Auth Scopes
+- [auth](/v0/middleware/auth.js) enables JWT authentication with an optional set of scopes
+- [hashid](/v0/middleware/hashid.js) automatically decodes ids in request parameters / tokens and encodes ids in the payload
+- [errors](/v0/middleware/errors.js) handles errors that occur in the handlers
+- [json](/v0/middleware/index.js) parses the request body as json
 
+### Auth scopes
+Auth scopes are used to allow JWTs to perform a subset of actions against the api. The set of scopes can be found in [scopes.js](/v0/scopes.js).
 
-## Database Migrations
+- `user:*` allows access the auth token to user create, get and update (created by logging in)
+- `user:resetPassword` allows the auth token to reset the users password (created by reset password workflow)
+- `user:confirmEmail` allows the auth token to confirm the email address (created by email confirmation workflow)
+
+## Database migrations
 Creates a new migration file in database/migrations:
 ```
 npm run db:migrations:make [name]
