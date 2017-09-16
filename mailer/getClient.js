@@ -14,10 +14,17 @@ module.exports = function getClient() {
 		send: async message => {
 			return new Promise((resolve, reject) => {
 				if (!mailgun) {
-					throw new Error(
+					const errorMsg =
 						'mailgun not initialized, check MAILGUN_API_KEY and MAILGUN_DOMAIN environment variables.'
-					)
+
+					if (process.env.NODE_ENV === 'production') {
+						return reject(new Error(errorMsg))
+					} else {
+						console.warn(errorMsg)
+						return resolve()
+					}
 				}
+
 				mailgun.messages().send(message, err => {
 					if (err) return reject(err)
 					resolve()
