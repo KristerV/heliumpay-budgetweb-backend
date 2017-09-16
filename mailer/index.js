@@ -8,7 +8,7 @@ module.exports.sendEmailConfirmation = async (to, userId, token) => {
 		to,
 		from: 'Support <support@heliumlabs.org>',
 		subject: 'Email Confirmation',
-		text: `${process.env.FRONTEND_URL}/users/${user.id}/confirmEmail?token=${token}`
+		text: `${process.env.FRONTEND_URL}/users/${userId}/confirmEmail?token=${token}`
 	})
 }
 
@@ -18,6 +18,6 @@ module.exports.sendPasswordReset = async (to, userId, token) => {
 		to,
 		from: 'Support <support@heliumlabs.org>',
 		subject: 'Reset Password',
-		text: `${process.env.FRONTEND_URL}/users/${user.id}/resetPassword?token=${token}`
+		text: `${process.env.FRONTEND_URL}/users/${userId}/resetPassword?token=${token}`
 	})
 }
