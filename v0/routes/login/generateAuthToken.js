@@ -1,5 +1,5 @@
 const { User } = require('../../../database/models')
-const { signJwt } = require('../../utils')
+const { signJwt, encodeId } = require('../../utils')
 const { BadRequestError, UnauthorizedError } = require('../../errors')
 const scopes = require('../../scopes')
 
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
 
 	const token = await signJwt(
 		{ scopes: scopes.user },
-		{ subject: `${user.id}`, expiresIn: '10h' }
+		{ subject: encodeId(user.id), expiresIn: '10h' }
 	)
 
 	res.json({ token })
