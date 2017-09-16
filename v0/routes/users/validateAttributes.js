@@ -8,7 +8,10 @@ const createInputSchema = yup.object().shape({
 	username: yup
 		.string()
 		.required()
-		.matches(/^[A-Za-z_][A-Za-z\d_]*$/)
+		.matches(
+			/^[A-Za-z_][A-Za-z\d_]*$/,
+			'username must container only letters, numbers or underscores and start with a letter'
+		)
 		.min(3),
 	// as least 12 chars
 	password: yup
