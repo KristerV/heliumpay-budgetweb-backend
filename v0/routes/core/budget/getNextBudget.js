@@ -1,8 +1,9 @@
 const runcli = require('../core-utils').runCliCmd
 const moment = require('moment')
+const config = require('../../../config.js')
 
 module.exports = async () => {
-	const lockedBlocks = 1662 // https://dashpay.atlassian.net/wiki/spaces/DOC/pages/19169430/Using+Decentralized+Governance+Proposals+Voting+and+Budgets
+	const lockedBlocks = config.lockedVotingBlocks
 
 	const govinfo = await runcli('getgovernanceinfo')
 	const latestHash = await runcli('getbestblockhash')
