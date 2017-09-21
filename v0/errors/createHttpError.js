@@ -1,5 +1,5 @@
 module.exports = function(name, code) {
-	return class HttpError extends Error {
+	class HttpError extends Error {
 		constructor(message) {
 			super(message)
 
@@ -12,4 +12,9 @@ module.exports = function(name, code) {
 			Error.captureStackTrace(this, this.constructor)
 		}
 	}
+
+	// static constant used for tests
+	HttpError.CODE = code
+
+	return HttpError
 }
