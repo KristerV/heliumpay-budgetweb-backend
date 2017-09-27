@@ -15,8 +15,8 @@ module.exports = async (req, res) => {
 		{ scopes: scopes.userResetPassword },
 		{ subject: encodeId(user.id), expiresIn: '5m' }
 	)
-	// TODO: api domain env var
-	await mailer.sendPasswordReset(user.email, encodeId(user.id), token)
+
+	await mailer.sendPasswordReset(user.email, token)
 
 	res.json(true)
 }

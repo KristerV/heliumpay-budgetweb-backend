@@ -22,8 +22,8 @@ module.exports = async (req, res) => {
 			{ scopes: scopes.userConfirmEmail },
 			{ subject: encodeId(user.id), expiresIn: '5m' }
 		)
-		// TODO: api domain env var
-		await mailer.sendEmailConfirmation(user.email, encodeId(user.id), token)
+
+		await mailer.sendEmailConfirmation(user.email, token)
 	}
 
 	res.json(User.toJSON(user))

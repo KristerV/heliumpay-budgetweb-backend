@@ -25,7 +25,8 @@ module.exports = async (req, res) => {
 			{ scopes: scopes.userConfirmEmail },
 			{ subject: encodeId(user.id), expiresIn: '5m' }
 		)
-		await mailer.sendEmailConfirmation(user.email, encodeId(user.id), token)
+
+		await mailer.sendEmailConfirmation(user.email, token)
 	}
 
 	const updatedUser = await User.update(user.id, {
