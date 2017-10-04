@@ -30,6 +30,16 @@ services:
       - MAILGUN_API_KEY # secret, set manually with $ export MAILGUN_API_KEY=[api-key]
       - MAILGUN_DOMAIN # secret, set manually with $ export MAILGUN_DOMAIN=[domain]
 
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-frontend
+    environment:
+      - NODE_ENV=PRODUCTION
+      - API_URL=http://app:3000
+      - TICKER=HLM
+      - SITE_TITLE=Heliumlabs
+
   daemon:
     build:
       context: .
