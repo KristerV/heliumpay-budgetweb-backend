@@ -8,7 +8,7 @@ module.exports = async () => {
 	const govinfo = await runcli('getgovernanceinfo')
 	const latestHash = await runcli('getbestblockhash')
 	const latestBlock = await runcli(['getblock', latestHash])
-	const oldBlockHeight = latestBlock.height - govinfo.superblockcycle
+	const oldBlockHeight = Math.max(latestBlock.height - govinfo.superblockcycle, 0)
 	const oldBlockHash = await runcli(['getblockhash', oldBlockHeight])
 	const oldBlock = await runcli(['getblock', oldBlockHash])
 	const budgetTotal = await runcli(['getsuperblockbudget', govinfo.nextsuperblock])
