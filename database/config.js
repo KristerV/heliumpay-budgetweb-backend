@@ -9,7 +9,7 @@ module.exports = {
 		ssl: !!process.env.DB_SSL
 	},
 	migrations: {
-		tableName: 'migrations',
+		tableName: 'migration',
 		directory: './database/migrations'
 	}
 }
