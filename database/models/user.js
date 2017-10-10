@@ -8,7 +8,7 @@ const { createTimestamps, updateTimestamps, withTransaction } = require('./utils
  * @module User
  */
 
-const table = 'users'
+const table = 'user'
 const privateFields = ['password']
 
 /**
@@ -92,7 +92,7 @@ module.exports.findOne = async attrs => {
 	const db = await getDbDriver()
 	const user = await db
 		.first()
-		.from('users')
+		.from(table)
 		.where(attrs)
 
 	return user
@@ -107,7 +107,7 @@ module.exports.findAll = async attrs => {
 	const db = await getDbDriver()
 	const user = await db
 		.select()
-		.from('users')
+		.from(table)
 		.where(attrs)
 
 	return user
