@@ -44,6 +44,11 @@ Tests are run against a separate test database. Make sure you run `docker-compos
 
 ```
 v0                                      // Alpha version, subject to constant change
+GET   v0/comments?proposalHash=         // Get all comments for a proposal
+POST  v0/comments                       // Create a new comment
+PUT   v0/comments/:id                   // Update a comment by id
+DEL   v0/comments/:id                   // Delete a comment by id
+POST  v0/comments/:id/vote              // Vote on a comment  
 GET   v0/core/proposals                 // All proposals
 GET   v0/core/proposals/:hash           // Single proposal
 GET   v0/core/raw-cli/*                 // Raw data from the cli
@@ -60,7 +65,7 @@ POST  v0/users/:id/resetPassword        // Updates the users password with short
 Middleware adds common behaviour to routes handlers.
 
 - [auth](/v0/middleware/auth.js) enables JWT authentication with an optional set of scopes
-- [hashid](/v0/middleware/hashid.js) automatically decodes ids in request parameters / tokens and encodes ids in the payload
+- [hashid](/v0/middleware/hashid.js) automatically hashes ids in the response and decodes them in the request
 - [errors](/v0/middleware/errors.js) handles errors that occur in the handlers
 - [json](/v0/middleware/index.js) parses the request body as json
 
